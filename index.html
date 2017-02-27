@@ -162,7 +162,7 @@ VmlPro Api is the data source of all other clients in Neuropro, providing variet
     You must replace <code>{{session_id}}</code> with key from login endpoint.
 </aside>
 
-<h1 id="mri">MRI</h1>
+<h1 id="endpoints">Endpoints</h1>
 
 <h2 id="get-test">Get Test</h2>
 <pre class="highlight json"><code><span class="p">{</span><span class="w">
@@ -370,6 +370,1550 @@ VmlPro Api is the data source of all other clients in Neuropro, providing variet
 <aside class="notice">
     Setting <code>meta=true</code> will cause DICOM image to be pulled from cloud to VmlPro API, slowers the endpoint response significantly.
 </aside>
+
+<h2 id="gt-login">&gt;Login</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Authenticates user based on username / password combination, and creates the user&rsquo;s application session.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/&gt;Login</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Username:</td>
+<td></td>
+<td>username [string] a unique user identifier defined at registration</td>
+</tr>
+<tr>
+<td>Password:</td>
+<td></td>
+<td>password [string] the password set by the user</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<p>Session_ID: [string] unique identifier created by the server and is associated with the user session. The session id parameters should be passed to subsequent API calls.  If authentication fails, null is returned.</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+[BASE-URL]/api/login?username=<user>&amp;password=&lt;*****&gt;
+</code></p>
+
+<h2 id="logoff">LOGOFF</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Closes user session and logs user off. Not implemented</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/LOGOFF</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>None</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<p>None</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+[BASE-URL]/api/logoff
+</code></p>
+
+<h2 id="updateuserprofile">UPDATEUSERPROFILE</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Updates user profile information</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/UPDATEUSERPROFILE</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>lname</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>fname</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>type</td>
+<td></td>
+<td>[Academic, Commercial]</td>
+</tr>
+<tr>
+<td>institution</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>addr1</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>addr2</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>city</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>country</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>email</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+
+<p>tel
+All| | input parameters are optional.</p>
+
+<h3 id="return">Return</h3>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+[BASE-URL]/api/updateuserprofile?session_id=###;jsessionid#&amp;username=winam&amp;fname=####&amp;lname=#####&amp;city=####@type=####
+</code></p>
+
+<h2 id="uploadphoto">UPLOADPHOTO</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Uploads, saves, and retrieves user profile photo</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/UPLOADPHOTO</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>To</td>
+<td></td>
+<td>Upload photo: HTTP POST To URL</td>
+</tr>
+<tr>
+<td>To</td>
+<td></td>
+<td>retrive photo: HTTP GET To URL</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+[BASE-URL]profilephoto;JSESSIONID=#####
+Note that this API is a pure HTTP POST / GET, the url does not have &#39;/api&#39; and session id must be passed in tomcat session format: JSESSIONID=####
+Photos will be upladed/served from S3
+</code></p>
+
+<h2 id="getattachments">GETATTACHMENTS</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Returns list of files attached to a case / admission</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/GETATTACHMENTS</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>admission_id(int)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>page</td>
+<td></td>
+<td>optional</td>
+</tr>
+<tr>
+<td>pagesize</td>
+<td></td>
+<td>(default 10)&ldquo;            optional</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<p>List of attachments</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+[BASE-URL]api/getattachments?session_id=###;jsessionid#&amp;username=winam&amp;admission_id=5001 A case can have one or more addmissions.  Use GETCASEDETAILS (#6) to obtain admission_id
+</code></p>
+
+<h2 id="getcasedetails">GETCASEDETAILS</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Returns case information with available static and dynamic meta data and available admission records. Note that a case can have one or more admission records.  An EEG recording is associated with an admission record.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/GETCASEDETAILS</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>case_id</td>
+<td></td>
+<td>(int)</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<p>Case information separated into two json elements: caseStatic and caseMeta</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+[BASE-URL]api/getcasedetails?session_id=###;jsessionid&amp;username=winam&amp;case_id=nn
+</code></p>
+
+<h2 id="getcaselist">GETCASELIST</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Returns a list of Cases that meet on of the following criteria</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/GETCASELIST</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>All</td>
+<td></td>
+<td>cases for all providers to which the user has access</td>
+</tr>
+<tr>
+<td>Return</td>
+<td></td>
+<td>all cases by provider id</td>
+</tr>
+<tr>
+<td>Return</td>
+<td></td>
+<td>all cases by provider id and case name (or part of case name)</td>
+</tr>
+<tr>
+<td>All</td>
+<td></td>
+<td>cases meeting 1 to 3 with in recording date range</td>
+</tr>
+<tr>
+<td>All</td>
+<td></td>
+<td>cases within a recording date range</td>
+</tr>
+<tr>
+<td>Return</td>
+<td></td>
+<td>a case by case id</td>
+</tr>
+<tr>
+<td>page</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>pagesize</td>
+<td></td>
+<td>(default 10)</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<p>Data returned to client:
+- All case information
+- # of cases meeting criteria
+- All recording information for each case
+- All block information for each recording</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+**
+[BASE-URL]api/getcaselist?and=case_id,=,5001
+returns case info for case_id=5001
+**
+[BASE-URL]api/getcaselist?and=case_id,&lt;,5001^case_gender,=,Female
+returns all cases whose case_id &lt; 5001 AND gender = &#39;Female&#39;
+**
+[BASE-URL]api/getcaselist?or=provider_id,=,1^provider_id,=,2
+returns all cases provided by provider_id=1 or provider_id=2
+**&quot;
+</code></p>
+
+<h2 id="getcasenamelist">GETCASENAMELIST</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Return list of case names for all cases of a provider</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/GETCASENAMELIST</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>provider_id</td>
+<td></td>
+<td>None…provider will be retrieved from logged in user profile</td>
+</tr>
+</tbody></table>
+
+<p>Command can be used to poulate auto
+complete| | textbox in case search screen in client UI.
+Note that the list of available providers can be obtained using GETPROVIDERLIST command (# 9)&rdquo;
+provider_id| | (int)
+page | | 
+pagesize| | (default 10)</p>
+
+<h3 id="return">Return</h3>
+
+<p>List of cases:
+- case name
+- case id</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+[BASE-URL]api/getcasenamelist?session_id=###;jsessionid&amp;username=winam&amp;provider_id=1
+</code></p>
+
+<h2 id="querycases">QUERYCASES</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Returns a list of cases by executing a saved, dynamically-created case query</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/QUERYCASES</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>query_id</td>
+<td></td>
+<td>(int)</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+[BASE-URL]api/querycases?session_id=###;jsessionid#&amp;query_id=1
+</code></p>
+
+<h2 id="deletecasequery">DELETECASEQUERY</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Deletes case query from user list of saved queries</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/DELETECASEQUERY</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>query_id</td>
+<td></td>
+<td>(int)</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<p>ID of deleted item</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+[BASE-URL]api/deletecasequery?session_id=###;jsessionid#&amp;username=winam&amp;query_id=4
+</code></p>
+
+<h2 id="getcasequerylist">GETCASEQUERYLIST</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Returns list of user saved, dynamically-created case queries</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/GETCASEQUERYLIST</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>None</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<p>List of saved queries</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+[BASE-URL]api/getcasequerylist?session_id=###;jsessionid#
+</code></p>
+
+<h2 id="savecasequery">SAVECASEQUERY</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Saves case query statement with a name identifier for a user</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/SAVECASEQUERY</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>queryname</td>
+<td></td>
+<td>(string)</td>
+</tr>
+<tr>
+<td>and</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>or</td>
+<td></td>
+<td>[Either &lsquo;and&rsquo; or &#39;or&rsquo; or both]</td>
+</tr>
+<tr>
+<td>seq_no</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<p>Auto generated QUERY_ID</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+[BASE-URL]api/savecasequery?session_id=###;jsessionid#&amp;and=case_id,!=,5000^provider_id,=,1&amp;or=case_gender,=,Female&amp;queryname=Test&amp;seq_no=2
+</code></p>
+
+<h2 id="geteegdata">GETEEGDATA</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Main API for accessing raw EEG data.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/GETEEGDATA</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>recording_id</td>
+<td></td>
+<td>(int)</td>
+</tr>
+<tr>
+<td>channel</td>
+<td></td>
+<td>(String) comma separated list of channels. If channel=0 all channels</td>
+</tr>
+<tr>
+<td>from_t</td>
+<td></td>
+<td>(string: hh:mm:ss)</td>
+</tr>
+<tr>
+<td>to_t</td>
+<td></td>
+<td>(string: hh:mm:ss)</td>
+</tr>
+</tbody></table>
+
+<p>Available filters:
+fALPHA | | 
+fBETA | | 
+fDELTA | | 
+fGAMMA | | 
+fTHETA | | 
+iALPHA | | 
+iBETA | | 
+iBP | | 
+N50 | | 
+iBP | | 
+iDELTA | | 
+iGAMMA | | 
+N50 | | 
+iGAMMA | | 
+iN50 | | 
+iTHETA | | 
+client_sampling| | (int)
+[Example: client_sampling=100, every hundredth EEG data point is returned]
+weight| | (int)
+filter:| | string as defined in E17
+montage_id| | [reference to montage_def table]
+filter_id| | [reference to filter_def table]
+or
+dfilter| | [dynamic filter expression of the following format:
+<filter_type>|<l_frequency>|<u_frequency>|<order>|<design>
+filter_type =
+charecter| | string:
+LP = Low Pass
+HP = High Pass
+BP = Band Pass
+NF = Notch Filter
+l_frequency = Lower frequency
+u_frequency = Upper frequency
+order = filter order [default = 2]
+design = IIR / FIR [default = IIR]
+Recording info + arrays of floats + channel mapping
+Raw non filtered EEG 50 minutes long for channel 1, 5, and 8:</p>
+
+<h3 id="return">Return</h3>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+[BASE-URL]api/geteegdata?session_id=###;jsessionid&amp;username=winam&amp;recording_id=100102&amp;channel=1,5,8&amp;from_t=00:00:05&amp;to_t=00:55:00
+**
+Raw non filtered EEG 2 hours long from all available channels for the recording scales by a factor of 8:
+[BASE-URL]api/geteegdata?session_id=###;jsessionid&amp;username=winam&amp;recording_id=100102&amp;channel=0&amp;from_t=00:00:00&amp;to_t=02:00:00&amp;weight=8
+**
+Same as above, with client samply = 256
+[BASE-URL]api/geteegdata?session_id=###;jsessionid&amp;username=winam&amp;recording_id=100102&amp;channel=1,5,8&amp;from_t=00:00:05&amp;to_t=00:55:00&amp;wieght=8&amp;client_sampling=256
+</code></p>
+
+<h2 id="getrecordinginfo">GETRECORDINGINFO</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Returns recording information and channel / electrode information for the recording</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/GETRECORDINGINFO</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>recording_id</td>
+<td></td>
+<td>(int)</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<p>Recording detailed information</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+[BASE-URL]api/getrecordinginfo?session_id=###;jsessionid&amp;username=winam&amp;recording_id=nnn
+</code></p>
+
+<h2 id="getseizures">GETSEIZURES</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Returns seizure information for a recording (if available)</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/GETSEIZURES</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>recording_id</td>
+<td></td>
+<td>(int) page</td>
+</tr>
+</tbody></table>
+
+<p>pagesize (default 10)</p>
+
+<h3 id="return">Return</h3>
+
+<p>JSON array of seizures</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+[BASE-URL]api/GetSeizures?session_id=###;jsessionid&amp;recording_id=100103
+</code></p>
+
+<h2 id="createnote">CREATENOTE</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Create a user note (event or annotation) on a recording at one point in time or for an interval (from_t, to_t)</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/CREATENOTE</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>note</td>
+<td></td>
+<td>(string)</td>
+</tr>
+<tr>
+<td>type</td>
+<td></td>
+<td>[Annotation</td>
+</tr>
+<tr>
+<td>sub_type</td>
+<td></td>
+<td>[reference to annotation or event table depending on type]</td>
+</tr>
+<tr>
+<td>recording_id</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>channel</td>
+<td></td>
+<td>(if channel = 0 then note will be created for all channels)</td>
+</tr>
+<tr>
+<td>from_t</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>to_t</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>seizure_id</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>duration</td>
+<td></td>
+<td>(default 0)</td>
+</tr>
+<tr>
+<td>group</td>
+<td></td>
+<td>(default 1)</td>
+</tr>
+<tr>
+<td>category</td>
+<td></td>
+<td>(default 1)</td>
+</tr>
+</tbody></table>
+
+<p>Type should be a for annotation, e for event, s for seizure and o for other</p>
+
+<h3 id="return">Return</h3>
+
+<p>Json array of note IDs created</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+</code></p>
+
+<h2 id="deletenote">DELETENOTE</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Deletes a user-created note</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/DELETENOTE</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>note_id</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+</code></p>
+
+<h2 id="getnotes">GETNOTES</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Retrieve list of user-created notes</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/GETNOTES</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>recording_id</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>type</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>channel</td>
+<td></td>
+<td>(default 0 all channels)</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+</code></p>
+
+<h2 id="updatenote">UPDATENOTE</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Updates a user-created note</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/UPDATENOTE</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>note_id</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>note</td>
+<td></td>
+<td>(string)</td>
+</tr>
+<tr>
+<td>from_t</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>to_t</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+</code></p>
+
+<h2 id="addtobookmark">ADDTOBOOKMARK</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Adds a case to user&rsquo;s bookmark list for future quick access</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/ADDTOBOOKMARK</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>case_id</td>
+<td></td>
+<td>(int)</td>
+</tr>
+<tr>
+<td>seq_no</td>
+<td></td>
+<td>(int)</td>
+</tr>
+</tbody></table>
+
+<p>3 – list_id</p>
+
+<h3 id="return">Return</h3>
+
+<p>ID of generated bookmark item</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+[BASE-URL]api/addtobookmark?session_id=###;jsessionid#@username=winam&amp;case_id=nnn&amp;seq_no=m
+</code></p>
+
+<h2 id="removebookmark">REMOVEBOOKMARK</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Removes bookmark item from user&rsquo;s bookmarks</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/REMOVEBOOKMARK</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>bookmark_id</td>
+<td></td>
+<td>(int)</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<p>ID of deleted item</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+[BASE-URL]api/removebookmark?session_id=###;jsessionid#&amp;username=winam&amp;bookmark_id=nnn
+</code></p>
+
+<h2 id="updatebookmark">UPDATEBOOKMARK</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Update bookmark item in user&rsquo;s bookmarks</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/UPDATEBOOKMARK</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>bookmark_id</td>
+<td></td>
+<td>(int)</td>
+</tr>
+<tr>
+<td>seq_no</td>
+<td></td>
+<td>(int)</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<p>ID of updated item</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+[BASEURL]api/updatebookmark?session_id=###;jsessionid#&amp;username=winam&amp;bookmark_id=nn&amp;seq_no=mm
+</code></p>
+
+<h2 id="savechannelsequence">SAVECHANNELSEQUENCE</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Saves channel display sequence for a recording per user.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/SAVECHANNELSEQUENCE</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>username</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>recording_id</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>seq</td>
+<td></td>
+<td>[a comman</td>
+</tr>
+<tr>
+<td>separated</td>
+<td></td>
+<td>list of channel numbers in the order of display. If a channel is hidden, do not include in the list]</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<p>success/failure</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+/api/savechannelsequence?session_id=&lt;####&gt;&amp;username=winam&amp;recording_id=nnn&amp;seq=n,m,k,l,p
+</code></p>
+
+<h2 id="powerspectrum-fft">POWERSPECTRUM FFT</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Generate a power spectrum of the recording or a segment of the recording for 1 or more channels</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/POWERSPECTRUM FFT</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>recording_id</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>channel</td>
+<td></td>
+<td>[integer or comma</td>
+</tr>
+<tr>
+<td>separated</td>
+<td></td>
+<td>list; 0 for all channels]</td>
+</tr>
+<tr>
+<td>from_t</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+
+<p>to_t&quot;
+5 | | 
+token
+Python | | 
+based | | </p>
+
+<h3 id="return">Return</h3>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+</code></p>
+
+<h2 id="savemontagedef">SAVEMONTAGEDEF</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Saves a new montage configuration to DB</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/SAVEMONTAGEDEF</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>user</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>montage_label</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>montage_type</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>montage_mapping</td>
+<td></td>
+<td>[e.g.: FP1:A1;FP2:A1;A1:A1;A2:A1, &hellip;]</td>
+</tr>
+</tbody></table>
+
+<p>Comment&quot;
+Pre | | 
+built| | montages are available to all users, and users can define new ones.
+Montag_type
+&ldquo;Longitudinal bipolar&rdquo;
+&ldquo;Transverse bipolar&rdquo;
+&ldquo;Referential&rdquo;
+&ldquo;Referential average&rdquo;
+&ldquo;Custom&rdquo;</p>
+
+<h3 id="return">Return</h3>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+</code></p>
+
+<h2 id="editmontagedef">EDITMONTAGEDEF</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Update an existing montage confugration in DB</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/EDITMONTAGEDEF</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>montage_id</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+
+<p>montage_mapping&quot;
+3| | – montage_label (optional)</p>
+
+<h3 id="return">Return</h3>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+</code></p>
+
+<h2 id="deletemontagedef">DELETEMONTAGEDEF</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Removes an existing montage configuration in DB</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/DELETEMONTAGEDEF</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>montage_id</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+</code></p>
+
+<h2 id="savefilteredefsavefilterdef">SAVEFILTEREDEFSAVEFILTERDEF</h2>
+<pre class="highlight json"><code></code></pre>
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/SAVEFILTEREDEFSAVEFILTERDEF</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>user</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>filter_label</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>filter_design</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>filter_type</td>
+<td></td>
+<td>(&#39;LP&rsquo;,&#39;HP&rsquo;,&#39;BP&rsquo;,&#39;NF&rsquo;   )</td>
+</tr>
+<tr>
+<td>l_frequency</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>uh_frequency</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>order</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>comment</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+</code></p>
+
+<h2 id="editfilteredefeditfilterdef">EDITFILTEREDEFEDITFILTERDEF</h2>
+<pre class="highlight json"><code></code></pre>
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/EDITFILTEREDEFEDITFILTERDEF</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>filter_id</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>filter_label</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>filter_design</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>filter_type</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>l_frequency</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>uh_frequency</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>order</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>comment</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+</code></p>
+
+<h2 id="deletefilterdef">DELETEFILTERDEF</h2>
+<pre class="highlight json"><code></code></pre>
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/DELETEFILTERDEF</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>filter_id</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+</code></p>
+
+<h2 id="savenotegroup">SaveNoteGroup</h2>
+<pre class="highlight json"><code></code></pre>
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/SaveNoteGroup</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>group</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+</code></p>
+
+<h2 id="savenotecategory">SaveNoteCategory</h2>
+<pre class="highlight json"><code></code></pre>
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/SaveNoteCategory</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+
+<p>group_id
+2 | | 
+category&quot; | | </p>
+
+<h3 id="return">Return</h3>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+</code></p>
+
+<h2 id="deletenotecategorycommand">DeleteNoteCategoryCommand</h2>
+<pre class="highlight json"><code></code></pre>
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/DeleteNoteCategoryCommand</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>category_id</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+</code></p>
+
+<h2 id="heatmap">HEATMAP</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Calculates a heat map representation of an EEG recording</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/HEATMAP</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>color_map</td>
+<td></td>
+<td>(default &ldquo;&rdquo;)</td>
+</tr>
+</tbody></table>
+
+<p>2 – rawdata (true/false) returns json or images
+3
+recording_id
+4| | – channel
+5 – from_t
+6 – to_t
+7 – token</p>
+
+<h3 id="return">Return</h3>
+
+<p>Json array containing links to images or json data</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+</code></p>
 
       </div>
       <div class="dark-box">
