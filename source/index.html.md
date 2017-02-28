@@ -63,7 +63,7 @@ SESSION_ID can be sent either by cookie or by assigning <code>;jsessionid={{sess
 	You must replace <code>{{session_id}}</code> with key from login endpoint.
 </aside>
 
-# Endpoints
+# MRI
 
 ## Get Test
 
@@ -228,7 +228,7 @@ mri_id|long|ID of desired MRI test.
 Retrieves DICOM image by its id along with cloud download link and meta-data.  
 
 ### HTTP Request
-`GET /getMriTestFile`
+`GET https://development.api.neuropro.ch/api/getMriTestFile`
 
 ### URL Parameters
 
@@ -241,19 +241,19 @@ meta|bool|If this is set to true, DICOM image will be parsed and its metadata wi
 	Setting <code>meta=true</code> will cause DICOM image to be pulled from cloud to VmlPro API, slowers the endpoint response significantly.
 </aside>
 
+# User & Session
 
-
-##>Login
+##Login
 ```json
 ```
 Authenticates user based on username / password combination, and creates the user's application session.
 ### HTTP Request
-`GET https://development.api.neuropro.ch/api/>Login`
+`GET https://development.api.neuropro.ch/api/login`
 ### Query Parameters
 Parameter | Type | Description
 --------- | ---- | -----------
-Username:| |  username [string] a unique user identifier defined at registration
-Password:| |  password [string] the password set by the user
+username | string | a unique user identifier defined at registration.
+password | string | password set by the user.
 ### Return
 
 Session_ID: [string] unique identifier created by the server and is associated with the user session. The session id parameters should be passed to subsequent API calls.  If authentication fails, null is returned.
@@ -289,19 +289,24 @@ Updates user profile information
 ### Query Parameters
 Parameter | Type | Description
 --------- | ---- | -----------
-lname | | 
-fname | | 
-type| | [Academic, Commercial]
-institution | | 
-addr1 | | 
-addr2 | | 
-city | | 
-country | | 
-email | | 
-tel
-All| | input parameters are optional.
-### Return
+lname | string | Last name.
+fname | string | First name.
+type| string | [Academic, Commercial].
+institution | string | Name of institution.
+addr1 | string | First address.
+addr2 | string | Second address (optional).
+city | string | City name.
+country | string | Country name.
+email | string | Valid email address. Used for password recovery. No duplicate e-mails allowed.
+tel | string | Telephone number.
 
+<aside class="notice">
+	All input parameters are optional.
+</aside>
+
+
+### Return
+Success/Failure
 
 ### Example Call
 <code>
@@ -312,21 +317,31 @@ All| | input parameters are optional.
 ```
 Uploads, saves, and retrieves user profile photo
 ### HTTP Request
-`GET https://development.api.neuropro.ch/api/UPLOADPHOTO`
+`GET https://development.api.neuropro.ch/UPLOADPHOTO`<br>
+`POST https://development.api.neuropro.ch/UPLOADPHOTO`
 ### Query Parameters
 Parameter | Type | Description
 --------- | ---- | -----------
-To| | Upload photo: HTTP POST To URL
-To| | retrive photo: HTTP GET To URL
+user_id | int | (Optional) id of user you want to retrieve profile photo of.
+
+<aside class="notice">
+<br>To upload photo: HTTP POST To URL
+<br>To retrive photo: HTTP GET To URL
+</aside>
 ### Return
 
 
 ### Example Call
 <code>
 [BASE-URL]profilephoto;JSESSIONID=#####
-Note that this API is a pure HTTP POST / GET, the url does not have '/api' and session id must be passed in tomcat session format: JSESSIONID=####
-Photos will be upladed/served from S3
 </code>
+<aside class="notice">
+Note that this API is a pure HTTP POST / GET, the url does not have '/api' and session id must be passed in tomcat session format: JSESSIONID=####. 
+Photos will be upladed/served from S3.
+</aside>
+
+#Case Data
+
 ##GETATTACHMENTS
 ```json
 ```
@@ -368,20 +383,22 @@ Case information separated into two json elements: caseStatic and caseMeta
 ##GETCASELIST
 ```json
 ```
-Returns a list of Cases that meet on of the following criteria
+Returns a list of Cases that meet on of the following criteria:
+1. All cases for all providers to which the user has access
+2. Return all cases by provider id
+3. Return all cases by provider id and case name (or part of case name)
+4. All cases meeting 1 to 3 with in recording date range
+5. All cases within a recording date range
+6. Return a case by case id
+
 ### HTTP Request
 `GET https://development.api.neuropro.ch/api/GETCASELIST`
+
 ### Query Parameters
 Parameter | Type | Description
 --------- | ---- | -----------
-All| | cases for all providers to which the user has access
-Return| | all cases by provider id
-Return| | all cases by provider id and case name (or part of case name)
-All| | cases meeting 1 to 3 with in recording date range
-All| | cases within a recording date range
-Return| | a case by case id
-page | | 
-pagesize| | (default 10)
+page | int | Offset of pagination page.
+pagesize| int | Number of records returned in a single call (default 10).
 ### Return
 
 Data returned to client:
@@ -503,6 +520,9 @@ Auto generated QUERY_ID
 <code>
 [BASE-URL]api/savecasequery?session_id=###;jsessionid#&and=case_id,!=,5000^provider_id,=,1&or=case_gender,=,Female&queryname=Test&seq_no=2
 </code>
+
+#EEG Data
+
 ##GETEEGDATA
 ```json
 ```
@@ -604,6 +624,9 @@ JSON array of seizures
 <code>
 [BASE-URL]api/GetSeizures?session_id=###;jsessionid&recording_id=100103
 </code>
+
+# Annotations/Events
+
 ##CREATENOTE
 ```json
 ```
@@ -613,18 +636,25 @@ Create a user note (event or annotation) on a recording at one point in time or 
 ### Query Parameters
 Parameter | Type | Description
 --------- | ---- | -----------
-note| | (string)
-type| | [Annotation | Event | Other]
-sub_type| | [reference to annotation or event table depending on type]
-recording_id | | 
-channel| | (if channel = 0 then note will be created for all channels)
-from_t | | 
-to_t | | 
-seizure_id | | 
-duration| | (default 0)
-group| | (default 1)
-category| | (default 1)
-Type should be a for annotation, e for event, s for seizure and o for other
+username| [String] | Username of logged-in user 
+type | [char] | Type of note. Can be a,e,s,o : a:annotation, e:event, s:seizure, o:other
+note |[String] | Content of the note (comment)
+from_t |[Time] | Relative start time of event (note) in format h*:mm:ss
+to_t |[Time] | Relative end time of event (note) in format h*:mm:ss
+c_label| [String] | Channel label
+recording_id| [int] | Recording id to add note to
+channel |[int] | number of channel of note. If this is set to 0, note will be added on all channels.
+seizure_id |[int] | (optional)  Reference to seizure. Default is 0.
+duration |[int] | (optional) Duration of the event in seconds. Default is 0.
+group |[int] | (optional) ID of group. default is 1
+category| [int] | (optional) ID of category. default is 1
+from_ts |[long] | (optional) Relative start time of event in ms. If set, from_t is not used anymore. For example 82123 which is 000:01:22.123
+to_ts |[long] | (optional) Relative end time of event in ms. If set, from_t is not used anymore
+
+<aside class="notice">
+	Type should be a for annotation, e for event, s for seizure and o for other
+</aside>
+
 ### Return
 
 Json array of note IDs created
@@ -632,22 +662,7 @@ Json array of note IDs created
 ### Example Call
 <code>
 </code>
-##DELETENOTE
-```json
-```
-Deletes a user-created note
-### HTTP Request
-`GET https://development.api.neuropro.ch/api/DELETENOTE`
-### Query Parameters
-Parameter | Type | Description
---------- | ---- | -----------
-note_id | | 
-### Return
 
-
-### Example Call
-<code>
-</code>
 ##GETNOTES
 ```json
 ```
@@ -657,9 +672,10 @@ Retrieve list of user-created notes
 ### Query Parameters
 Parameter | Type | Description
 --------- | ---- | -----------
-recording_id | | 
-type | | 
-channel| |          (default 0 all channels)
+channel | [int] | (optional) Number of channel to get notes. Default is 0, will get notes from all channels.
+recording_id | [int] | Id of desired recording.
+username | [String] | Username of logged-in user.
+type | [Char] | Type of notes to get. Can be a,e,s,o : a:annotation, e:event, s:seizure, o:other
 ### Return
 
 
@@ -675,16 +691,95 @@ Updates a user-created note
 ### Query Parameters
 Parameter | Type | Description
 --------- | ---- | -----------
-note_id | | 
-note| | (string)
-from_t | | 
-to_t | | 
+note_id | [int] | id of note to delete.
+note | [String] | Content of the note (comment)
+from_t | [Time] | Relative start time of event (note) in format h*:mm:ss
+to_t | [Time] | Relative end time of event (note) in format h*:mm:ss
+username | [String] | Username of logged-in user.
+### Return
+### Example Call
+<code>
+</code>
+
+##DELETENOTE
+```json
+```
+Deletes a user-created note.
+<aside class="notice">
+	Note that this endpoint can only delete notes created by LOGGED IN User.
+</aside>
+### HTTP Request
+`GET https://development.api.neuropro.ch/api/DELETENOTE`
+### Query Parameters
+Parameter | Type | Description
+--------- | ---- | -----------
+note_id | [int] | id of note to delete.
+username | [String] | Username of logged-in user.
+
+### Return
+
+### Example Call
+<code>
+</code>
+
+##SaveNoteGroup
+Creates new notes group.
+```json
+```
+
+### HTTP Request
+`GET https://development.api.neuropro.ch/api/SaveNoteGroup`
+### Query Parameters
+Parameter | Type | Description
+--------- | ---- | -----------
+group | [String] | Name of new group.
+username | [String] | Username of logged-in user.
 ### Return
 
 
 ### Example Call
 <code>
 </code>
+##SaveNoteCategory
+Creates new category for notes based on group.
+```json
+```
+
+### HTTP Request
+`GET https://development.api.neuropro.ch/api/SaveNoteCategory`
+### Query Parameters
+Parameter | Type | Description
+--------- | ---- | -----------
+group_id | [int] | Id of group to add category in.
+category | [String] | Name of new category.
+username | [String] | Username of logged-in user.
+### Return
+
+
+### Example Call
+<code>
+</code>
+##DeleteNoteCategory
+Deletes notes group.
+```json
+```
+
+### HTTP Request
+`GET https://development.api.neuropro.ch/api/DeleteNoteCategory`
+### Query Parameters
+Parameter | Type | Description
+--------- | ---- | -----------
+group_id | [int] | ID of group to delete.
+username | [String] | Username of logged-in user.
+### Return
+
+
+### Example Call
+<code>
+</code>
+
+#Bookmark
+
 ##ADDTOBOOKMARK
 ```json
 ```
@@ -753,8 +848,7 @@ Parameter | Type | Description
 --------- | ---- | -----------
 username | | 
 recording_id | | 
-seq| | [a comman
-separated| | list of channel numbers in the order of display. If a channel is hidden, do not include in the list]
+seq| | a comma separated list of channel numbers in the order of display. If a channel is hidden, do not include in the list.
 ### Return
 
 success/failure
@@ -763,22 +857,20 @@ success/failure
 <code>
 /api/savechannelsequence?session_id=<####>&username=winam&recording_id=nnn&seq=n,m,k,l,p
 </code>
-##POWERSPECTRUM FFT
+##POWERSPECTRUM
 ```json
 ```
 Generate a power spectrum of the recording or a segment of the recording for 1 or more channels
 ### HTTP Request
-`GET https://development.api.neuropro.ch/api/POWERSPECTRUM FFT`
+`GET https://development.api.neuropro.ch/api/POWERSPECTRUM`
 ### Query Parameters
 Parameter | Type | Description
 --------- | ---- | -----------
-recording_id | | 
-channel| | [integer or comma
-separated| | list; 0 for all channels]
-from_t | | 
-to_t"
-5 | | 
-token
+recording_id | long | Id of recording desired. 
+channel| | [integer or comma separated list; 0 for all channels]
+from_t |[Time] | Relative start time of event (note) in format hh:mm:ss
+to_t | [Time] | Relative end time of event (note) in format hh:mm:ss
+token | |
 Python | | 
 based | | 
 ### Return
@@ -905,59 +997,6 @@ comment | |
 Parameter | Type | Description
 --------- | ---- | -----------
 filter_id | | 
-### Return
-
-
-### Example Call
-<code>
-</code>
-##SaveNoteGroup
-```json
-```
-
-### HTTP Request
-`GET https://development.api.neuropro.ch/api/SaveNoteGroup`
-### Query Parameters
-Parameter | Type | Description
---------- | ---- | -----------
-1 | | 
-group | | 
-### Return
-
-
-### Example Call
-<code>
-</code>
-##SaveNoteCategory
-```json
-```
-
-### HTTP Request
-`GET https://development.api.neuropro.ch/api/SaveNoteCategory`
-### Query Parameters
-Parameter | Type | Description
---------- | ---- | -----------
-1 | | 
-group_id
-2 | | 
-category" | | 
-### Return
-
-
-### Example Call
-<code>
-</code>
-##DeleteNoteCategoryCommand
-```json
-```
-
-### HTTP Request
-`GET https://development.api.neuropro.ch/api/DeleteNoteCategoryCommand`
-### Query Parameters
-Parameter | Type | Description
---------- | ---- | -----------
-1 | | 
-category_id | | 
 ### Return
 
 
