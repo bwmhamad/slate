@@ -63,11 +63,413 @@ SESSION_ID can be sent either by cookie or by assigning <code>;jsessionid={{sess
 	You must replace <code>{{session_id}}</code> with key from login endpoint.
 </aside>
 
+# User & Session
+
+##LOGIN
+```json
+```
+Authenticates user based on username / password combination, and creates the user's application session.
+### HTTP Request
+`GET https://development.api.neuropro.ch/api/login`
+### Query Parameters
+Parameter | Type | Description
+--------- | ---- | -----------
+username | string | a unique user identifier defined at registration.
+password | string | password set by the user.
+### Return
+
+Session_ID: [string] unique identifier created by the server and is associated with the user session. The session id parameters should be passed to subsequent API calls.  If authentication fails, null is returned.
+
+### Example Call
+<code>
+[BASE-URL]/api/login?username=<user>&password=<*****>
+</code>
+##LOGOFF
+```json
+```
+Closes user session and logs user off. Not implemented
+### HTTP Request
+`GET https://development.api.neuropro.ch/api/LOGOFF`
+### Query Parameters
+Parameter | Type | Description
+--------- | ---- | -----------
+None | | 
+### Return
+
+None
+
+### Example Call
+<code>
+[BASE-URL]/api/logoff
+</code>
+##UPDATEUSERPROFILE
+```json
+```
+Updates user profile information
+### HTTP Request
+`GET https://development.api.neuropro.ch/api/UPDATEUSERPROFILE`
+### Query Parameters
+Parameter | Type | Description
+--------- | ---- | -----------
+lname | string | Last name.
+fname | string | First name.
+type| string | [Academic, Commercial].
+institution | string | Name of institution.
+addr1 | string | First address.
+addr2 | string | Second address (optional).
+city | string | City name.
+country | string | Country name.
+email | string | Valid email address. Used for password recovery. No duplicate e-mails allowed.
+tel | string | Telephone number.
+
+<aside class="notice">
+	All input parameters are optional.
+</aside>
+
+
+### Return
+Success/Failure
+
+### Example Call
+<code>
+[BASE-URL]/api/updateuserprofile;jsessionid=###?username=winam&fname=####&lname=#####&city=####@type=####
+</code>
+##UPLOADPHOTO
+```json
+```
+Uploads, saves, and retrieves user profile photo
+### HTTP Request
+`GET https://development.api.neuropro.ch/UPLOADPHOTO`<br>
+`POST https://development.api.neuropro.ch/UPLOADPHOTO`
+### Query Parameters
+Parameter | Type | Description
+--------- | ---- | -----------
+user_id | int | (Optional) id of user you want to retrieve profile photo of.
+
+<aside class="notice">
+<br>To upload photo: HTTP POST To URL
+<br>To retrive photo: HTTP GET To URL
+</aside>
+### Return
+
+
+### Example Call
+<code>
+[BASE-URL]profilephoto;JSESSIONID=#####
+</code>
+<aside class="notice">
+Note that this API is a pure HTTP POST / GET, the url does not have '/api' and session id must be passed in tomcat session format: JSESSIONID=####. 
+Photos will be upladed/served from S3.
+</aside>
+
+#Case Data
+
+##GETATTACHMENTS
+```json
+```
+Returns list of files attached to a case / admission
+### HTTP Request
+`GET https://development.api.neuropro.ch/api/GETATTACHMENTS`
+### Query Parameters
+Parameter | Type | Description
+--------- | ---- | -----------
+admission_id | int | ID of case's admission.
+page| int | (optional) Offset of pagination page. If not set all records will be shown.
+pagesize| int | (optional) Number of records returned per page (default 10).
+### Return
+
+List of attachments
+
+### Example Call
+<code>
+[BASE-URL]api/getattachments;jsessionid=###?username=winam&admission_id=5001 A case can have one or more addmissions.  Use GETCASEDETAILS (#6) to obtain admission_id
+</code>
+##GETCASEDETAILS
+```json
+```
+Returns case information with available static and dynamic meta data and available admission records. Note that a case can have one or more admission records.  An EEG recording is associated with an admission record.
+### HTTP Request
+`GET https://development.api.neuropro.ch/api/GETCASEDETAILS`
+### Query Parameters
+Parameter | Type | Description
+--------- | ---- | -----------
+case_id| int | ID of case to retrieve.
+### Return
+
+Case information separated into two json elements: caseStatic and caseMeta.
+
+### Example Call
+<code>
+[BASE-URL]api/getcasedetails?session_id=###;jsessionid&username=winam&case_id=nn
+</code>
+##GETCASELIST
+```json
+```
+Returns a list of Cases that meet on of the following criteria:
+1. All cases for all providers to which the user has access
+2. Return all cases by provider id
+3. Return all cases by provider id and case name (or part of case name)
+4. All cases meeting 1 to 3 with in recording date range
+5. All cases within a recording date range
+6. Return a case by case id
+
+### HTTP Request
+`GET https://development.api.neuropro.ch/api/GETCASELIST`
+
+### Query Parameters
+Parameter | Type | Description
+--------- | ---- | -----------
+page | int | Offset of pagination page. If not set all records will be shown.
+pagesize| int | Number of records returned in a single call (default 10). 
+### Return
+
+Data returned to client:
+- All case information
+- # of cases meeting criteria
+- All recording information for each case
+- All block information for each recording
+
+### Example Call
+<code>
+**
+[BASE-URL]api/getcaselist?and=case_id,=,5001
+returns case info for case_id=5001
+**
+[BASE-URL]api/getcaselist?and=case_id,<,5001^case_gender,=,Female
+returns all cases whose case_id < 5001 AND gender = 'Female'
+**
+[BASE-URL]api/getcaselist?or=provider_id,=,1^provider_id,=,2
+returns all cases provided by provider_id=1 or provider_id=2
+**"
+</code>
+##GETCASENAMELIST
+```json
+```
+Return list of case names for all cases of user's provider.
+Command can be used to poulate auto-complete textbox in case search screen in client UI.
+<aside class="notice">
+	Note that the list of available providers can be obtained using GETPROVIDERLIST endpoint
+</aside> 
+### HTTP Request
+`GET https://development.api.neuropro.ch/api/GETCASENAMELIST`
+### Query Parameters
+Parameter | Type | Description
+--------- | ---- | -----------
+page | int | Offset of pagination page. If not set all records will be shown.
+pagesize| int | Number of records returned in a single call (default 10). 
+### Return
+
+List of cases:
+- case name
+- case id
+
+### Example Call
+<code>
+[BASE-URL]api/getcasenamelist?session_id=###;jsessionid&username=winam&provider_id=1
+</code>
+##QUERYCASES
+```json
+```
+Returns a list of cases by executing a saved, dynamically-created case query
+### HTTP Request
+`GET https://development.api.neuropro.ch/api/QUERYCASES`
+### Query Parameters
+Parameter | Type | Description
+--------- | ---- | -----------
+query_id| int | ID of pre-defined query.
+### Return
+
+
+### Example Call
+<code>
+[BASE-URL]api/querycases;jsessionid=###?query_id=1
+</code>
+##DELETECASEQUERY
+```json
+```
+Deletes case query from user list of saved queries
+### HTTP Request
+`GET https://development.api.neuropro.ch/api/DELETECASEQUERY`
+### Query Parameters
+Parameter | Type | Description
+--------- | ---- | -----------
+query_id| int | ID of pre-defined query.
+### Return
+
+ID of deleted item
+
+### Example Call
+<code>
+[BASE-URL]api/deletecasequery;jsessionid=###?username=winam&query_id=4
+</code>
+##GETCASEQUERYLIST
+```json
+```
+Returns list of user saved, dynamically-created case queries
+### HTTP Request
+`GET https://development.api.neuropro.ch/api/GETCASEQUERYLIST`
+### Query Parameters
+Parameter | Type | Description
+--------- | ---- | -----------
+None | | 
+### Return
+
+List of saved queries
+
+### Example Call
+<code>
+[BASE-URL]api/getcasequerylist;jsessionid=###
+</code>
+##SAVECASEQUERY
+```json
+```
+Saves case query statement with a name identifier for a user
+### HTTP Request
+`GET https://development.api.neuropro.ch/api/SAVECASEQUERY`
+### Query Parameters
+Parameter | Type | Description
+--------- | ---- | -----------
+queryname| string | Query name.
+and | string | and operation in form: field,operant,value (see examples).
+or| string | or operation in form: field,operant,value (see examples).
+seq_no | int | Query position in the list of user's query.
+<aside class="notice">
+	Parameters allowed : [Either 'and' or 'or' or both]
+</aside>
+### Return
+
+Auto generated QUERY_ID
+
+### Example Call
+<code>
+[BASE-URL]api/savecasequery;jsessionid=###?and=case_id,!=,5000^provider_id,=,1&or=case_gender,=,Female&queryname=Test&seq_no=2
+</code>
+
+#Recording
+
+##GETRECORDINGINFO
+```json
+```
+Returns recording information and channel / electrode information for the recording
+### HTTP Request
+`GET https://development.api.neuropro.ch/api/GETRECORDINGINFO`
+### Query Parameters
+Parameter | Type | Description
+--------- | ---- | -----------
+recording_id| int | ID of the recording.
+### Return
+
+Recording detailed information
+
+### Example Call
+<code>
+[BASE-URL]api/getrecordinginfo;jsessionid=###?username=winam&recording_id=nnn
+</code>
+
+##RECORDINGLIST
+```json
+```
+Returns list of recordings for logged-in user provider.
+### HTTP Request
+`GET https://development.api.neuropro.ch/api/RECORDINGLIST`
+### Query Parameters
+Parameter | Type | Description
+--------- | ---- | -----------
+username| string | Username of logged-in user.
+### Return
+
+Recording list with detailed information.
+
+### Example Call
+<code>
+[BASE-URL]api/recordinglist?username=user
+</code>
+
+##GETEEGDATA
+```json
+```
+Main API for accessing raw EEG data.
+### HTTP Request
+`GET https://development.api.neuropro.ch/api/GETEEGDATA`
+### Query Parameters
+Parameter | Type | Description
+--------- | ---- | -----------
+recording_id| int | ID of desired recording.
+channel| string |  comma separated list of channels. If channel=0 all channels
+from_t | string | Relative start of data time in format HH:mm:ss
+to_t | string | Relative end of data in format HH:mm:ss
+client_sampling| int | [Example: client_sampling=100, every hundredth EEG data point is returned]
+weight| int | Weight of data.
+filter| string | Available filters: fALPHA , fBETA , fDELTA , fGAMMA , fTHETA , iALPHA , iBETA , iBP , N50 , iBP , iDELTA , iGAMMA , N50 , iGAMMA , iN50 , iTHETA
+montage_id| int | reference to montage_def table
+filter_id| int | (optional if dfilter is set) reference to filter_def table 
+dfilter| string | (optional if filter_id is set) dynamic filter expression of the following format: &lt;filter_type&gt;&#124;&lt;l_frequency&gt;&#124;&lt;u_frequency&gt;&#124;&lt;order&gt;&#124;&lt;design&gt;
+filter_type | 2-charecter string | either of : [ LP = Low Pass , HP = High Pass, BP = Band Pass, NF = Notch Filter
+l_frequency | int | Lower frequency
+u_frequency | int | Upper frequency
+order |int| (optional) filter order [default = 2]
+design | string | IIR / FIR [default = IIR]
+### Return
+Recording info + arrays of floats + channel mapping.
+
+### Example Call
+<code>
+
+Raw non filtered EEG 50 minutes long for channel 1, 5, and 8:<br>
+[BASE-URL]api/geteegdata;jsessionid=###?username=winam&recording_id=100102&channel=1,5,8&from_t=00:00:05&to_t=00:55:00<br>
+**<br>
+Raw non filtered EEG 2 hours long from all available channels for the recording scales by a factor of 8:<br>
+[BASE-URL]api/geteegdata;jsessionid=###?username=winam&recording_id=100102&channel=0&from_t=00:00:00&to_t=02:00:00&weight=8<br>
+**<br>
+Same as above, with client samply = 256:<br>
+[BASE-URL]api/geteegdata;jsessionid=###?username=winam&recording_id=100102&channel=1,5,8&from_t=00:00:05&to_t=00:55:00&wieght=8&client_sampling=256<br>
+</code>
+
+##GETSEIZURES
+```json
+```
+Returns seizure information for a recording (if available)
+### HTTP Request
+`GET https://development.api.neuropro.ch/api/GETSEIZURES`
+### Query Parameters
+Parameter | Type | Description
+--------- | ---- | -----------
+recording_id| int | ID of the rexording 
+page| int | (optional) Offset of pagination page. If not set all records will be shown.
+pagesize| int | (optional) Number of records returned per page (default 10).
+### Return
+
+JSON array of seizures
+
+### Example Call
+<code>
+[BASE-URL]api/GetSeizures;jsessionid=###?recording_id=100103
+</code>
+
+##SAVECHANNELSEQUENCE
+```json
+```
+Saves channel display sequence for a recording per user.
+### HTTP Request
+`GET https://development.api.neuropro.ch/api/SAVECHANNELSEQUENCE`
+### Query Parameters
+Parameter | Type | Description
+--------- | ---- | -----------
+username | string | Username of logged-in user.
+recording_id | int | ID of the recording.
+seq| string | a comma separated list of channel numbers in the order of display. If a channel is hidden, do not include in the list.
+### Return
+
+success/failure
+
+### Example Call
+<code>
+/api/savechannelsequence;jsessionid=###?username=winam&recording_id=nnn&seq=n,m,k,l,p
+</code>
+
 # MRI
 
-## Get Test
-
-
+## GETMRITESTINFO
 
 ```json
 {
@@ -137,7 +539,7 @@ Parameter | Type | Description
 --------- | ---- | -----------
 id | long | ID of test to retrieve
 
-## Get Test List
+## GETMRITESTLIST
 
 ```json
 {
@@ -165,7 +567,7 @@ Parameter | Type | Description
 --------- | ---- | -----------
 files|bool|If this set to true, list of files will be included with each MRI test. Default: true
 
-## Get Image List
+## GETMRITESTFILES
 
 ```json
 {
@@ -206,7 +608,7 @@ Parameter | Type | Description
 mri_id|long|ID of desired MRI test.
 
 
-## Get Image List
+## GETMRITESTFILE
 
 ```json
 {
@@ -241,390 +643,6 @@ meta|bool|If this is set to true, DICOM image will be parsed and its metadata wi
 	Setting <code>meta=true</code> will cause DICOM image to be pulled from cloud to VmlPro API, slowers the endpoint response significantly.
 </aside>
 
-# User & Session
-
-##Login
-```json
-```
-Authenticates user based on username / password combination, and creates the user's application session.
-### HTTP Request
-`GET https://development.api.neuropro.ch/api/login`
-### Query Parameters
-Parameter | Type | Description
---------- | ---- | -----------
-username | string | a unique user identifier defined at registration.
-password | string | password set by the user.
-### Return
-
-Session_ID: [string] unique identifier created by the server and is associated with the user session. The session id parameters should be passed to subsequent API calls.  If authentication fails, null is returned.
-
-### Example Call
-<code>
-[BASE-URL]/api/login?username=<user>&password=<*****>
-</code>
-##LOGOFF
-```json
-```
-Closes user session and logs user off. Not implemented
-### HTTP Request
-`GET https://development.api.neuropro.ch/api/LOGOFF`
-### Query Parameters
-Parameter | Type | Description
---------- | ---- | -----------
-None | | 
-### Return
-
-None
-
-### Example Call
-<code>
-[BASE-URL]/api/logoff
-</code>
-##UPDATEUSERPROFILE
-```json
-```
-Updates user profile information
-### HTTP Request
-`GET https://development.api.neuropro.ch/api/UPDATEUSERPROFILE`
-### Query Parameters
-Parameter | Type | Description
---------- | ---- | -----------
-lname | string | Last name.
-fname | string | First name.
-type| string | [Academic, Commercial].
-institution | string | Name of institution.
-addr1 | string | First address.
-addr2 | string | Second address (optional).
-city | string | City name.
-country | string | Country name.
-email | string | Valid email address. Used for password recovery. No duplicate e-mails allowed.
-tel | string | Telephone number.
-
-<aside class="notice">
-	All input parameters are optional.
-</aside>
-
-
-### Return
-Success/Failure
-
-### Example Call
-<code>
-[BASE-URL]/api/updateuserprofile?session_id=###;jsessionid#&username=winam&fname=####&lname=#####&city=####@type=####
-</code>
-##UPLOADPHOTO
-```json
-```
-Uploads, saves, and retrieves user profile photo
-### HTTP Request
-`GET https://development.api.neuropro.ch/UPLOADPHOTO`<br>
-`POST https://development.api.neuropro.ch/UPLOADPHOTO`
-### Query Parameters
-Parameter | Type | Description
---------- | ---- | -----------
-user_id | int | (Optional) id of user you want to retrieve profile photo of.
-
-<aside class="notice">
-<br>To upload photo: HTTP POST To URL
-<br>To retrive photo: HTTP GET To URL
-</aside>
-### Return
-
-
-### Example Call
-<code>
-[BASE-URL]profilephoto;JSESSIONID=#####
-</code>
-<aside class="notice">
-Note that this API is a pure HTTP POST / GET, the url does not have '/api' and session id must be passed in tomcat session format: JSESSIONID=####. 
-Photos will be upladed/served from S3.
-</aside>
-
-#Case Data
-
-##GETATTACHMENTS
-```json
-```
-Returns list of files attached to a case / admission
-### HTTP Request
-`GET https://development.api.neuropro.ch/api/GETATTACHMENTS`
-### Query Parameters
-Parameter | Type | Description
---------- | ---- | -----------
-admission_id(int) | | 
-page| | optional
-pagesize| | (default 10)"            optional
-### Return
-
-List of attachments
-
-### Example Call
-<code>
-[BASE-URL]api/getattachments?session_id=###;jsessionid#&username=winam&admission_id=5001 A case can have one or more addmissions.  Use GETCASEDETAILS (#6) to obtain admission_id
-</code>
-##GETCASEDETAILS
-```json
-```
-Returns case information with available static and dynamic meta data and available admission records. Note that a case can have one or more admission records.  An EEG recording is associated with an admission record.
-### HTTP Request
-`GET https://development.api.neuropro.ch/api/GETCASEDETAILS`
-### Query Parameters
-Parameter | Type | Description
---------- | ---- | -----------
-case_id| | (int)
-### Return
-
-Case information separated into two json elements: caseStatic and caseMeta
-
-### Example Call
-<code>
-[BASE-URL]api/getcasedetails?session_id=###;jsessionid&username=winam&case_id=nn
-</code>
-##GETCASELIST
-```json
-```
-Returns a list of Cases that meet on of the following criteria:
-1. All cases for all providers to which the user has access
-2. Return all cases by provider id
-3. Return all cases by provider id and case name (or part of case name)
-4. All cases meeting 1 to 3 with in recording date range
-5. All cases within a recording date range
-6. Return a case by case id
-
-### HTTP Request
-`GET https://development.api.neuropro.ch/api/GETCASELIST`
-
-### Query Parameters
-Parameter | Type | Description
---------- | ---- | -----------
-page | int | Offset of pagination page.
-pagesize| int | Number of records returned in a single call (default 10).
-### Return
-
-Data returned to client:
-- All case information
-- # of cases meeting criteria
-- All recording information for each case
-- All block information for each recording
-
-### Example Call
-<code>
-**
-[BASE-URL]api/getcaselist?and=case_id,=,5001
-returns case info for case_id=5001
-**
-[BASE-URL]api/getcaselist?and=case_id,<,5001^case_gender,=,Female
-returns all cases whose case_id < 5001 AND gender = 'Female'
-**
-[BASE-URL]api/getcaselist?or=provider_id,=,1^provider_id,=,2
-returns all cases provided by provider_id=1 or provider_id=2
-**"
-</code>
-##GETCASENAMELIST
-```json
-```
-Return list of case names for all cases of a provider
-### HTTP Request
-`GET https://development.api.neuropro.ch/api/GETCASENAMELIST`
-### Query Parameters
-Parameter | Type | Description
---------- | ---- | -----------
-provider_id| | None…provider will be retrieved from logged in user profile
-Command can be used to poulate auto
-complete| | textbox in case search screen in client UI.
-Note that the list of available providers can be obtained using GETPROVIDERLIST command (# 9)"
-provider_id| | (int)
-page | | 
-pagesize| | (default 10)
-### Return
-
-List of cases:
-- case name
-- case id
-
-### Example Call
-<code>
-[BASE-URL]api/getcasenamelist?session_id=###;jsessionid&username=winam&provider_id=1
-</code>
-##QUERYCASES
-```json
-```
-Returns a list of cases by executing a saved, dynamically-created case query
-### HTTP Request
-`GET https://development.api.neuropro.ch/api/QUERYCASES`
-### Query Parameters
-Parameter | Type | Description
---------- | ---- | -----------
-query_id| | (int)
-### Return
-
-
-### Example Call
-<code>
-[BASE-URL]api/querycases?session_id=###;jsessionid#&query_id=1
-</code>
-##DELETECASEQUERY
-```json
-```
-Deletes case query from user list of saved queries
-### HTTP Request
-`GET https://development.api.neuropro.ch/api/DELETECASEQUERY`
-### Query Parameters
-Parameter | Type | Description
---------- | ---- | -----------
-query_id| | (int)
-### Return
-
-ID of deleted item
-
-### Example Call
-<code>
-[BASE-URL]api/deletecasequery?session_id=###;jsessionid#&username=winam&query_id=4
-</code>
-##GETCASEQUERYLIST
-```json
-```
-Returns list of user saved, dynamically-created case queries
-### HTTP Request
-`GET https://development.api.neuropro.ch/api/GETCASEQUERYLIST`
-### Query Parameters
-Parameter | Type | Description
---------- | ---- | -----------
-None | | 
-### Return
-
-List of saved queries
-
-### Example Call
-<code>
-[BASE-URL]api/getcasequerylist?session_id=###;jsessionid#
-</code>
-##SAVECASEQUERY
-```json
-```
-Saves case query statement with a name identifier for a user
-### HTTP Request
-`GET https://development.api.neuropro.ch/api/SAVECASEQUERY`
-### Query Parameters
-Parameter | Type | Description
---------- | ---- | -----------
-queryname| | (string)
-and | | 
-or| | [Either 'and' or 'or' or both]
-seq_no | | 
-### Return
-
-Auto generated QUERY_ID
-
-### Example Call
-<code>
-[BASE-URL]api/savecasequery?session_id=###;jsessionid#&and=case_id,!=,5000^provider_id,=,1&or=case_gender,=,Female&queryname=Test&seq_no=2
-</code>
-
-#EEG Data
-
-##GETEEGDATA
-```json
-```
-Main API for accessing raw EEG data.
-### HTTP Request
-`GET https://development.api.neuropro.ch/api/GETEEGDATA`
-### Query Parameters
-Parameter | Type | Description
---------- | ---- | -----------
-recording_id| | (int)
-channel| | (String) comma separated list of channels. If channel=0 all channels
-from_t| | (string: hh:mm:ss)
-to_t| | (string: hh:mm:ss)
-Available filters:
-fALPHA | | 
-fBETA | | 
-fDELTA | | 
-fGAMMA | | 
-fTHETA | | 
-iALPHA | | 
-iBETA | | 
-iBP | | 
-N50 | | 
-iBP | | 
-iDELTA | | 
-iGAMMA | | 
-N50 | | 
-iGAMMA | | 
-iN50 | | 
-iTHETA | | 
-client_sampling| | (int)
-[Example: client_sampling=100, every hundredth EEG data point is returned]
-weight| | (int)
-filter:| | string as defined in E17
-montage_id| | [reference to montage_def table]
-filter_id| | [reference to filter_def table]
-or
-dfilter| | [dynamic filter expression of the following format:
-<filter_type>|<l_frequency>|<u_frequency>|<order>|<design>
-filter_type =
-charecter| | string:
-LP = Low Pass
-HP = High Pass
-BP = Band Pass
-NF = Notch Filter
-l_frequency = Lower frequency
-u_frequency = Upper frequency
-order = filter order [default = 2]
-design = IIR / FIR [default = IIR]
-Recording info + arrays of floats + channel mapping
-Raw non filtered EEG 50 minutes long for channel 1, 5, and 8:
-### Return
-
-
-### Example Call
-<code>
-[BASE-URL]api/geteegdata?session_id=###;jsessionid&username=winam&recording_id=100102&channel=1,5,8&from_t=00:00:05&to_t=00:55:00
-**
-Raw non filtered EEG 2 hours long from all available channels for the recording scales by a factor of 8:
-[BASE-URL]api/geteegdata?session_id=###;jsessionid&username=winam&recording_id=100102&channel=0&from_t=00:00:00&to_t=02:00:00&weight=8
-**
-Same as above, with client samply = 256
-[BASE-URL]api/geteegdata?session_id=###;jsessionid&username=winam&recording_id=100102&channel=1,5,8&from_t=00:00:05&to_t=00:55:00&wieght=8&client_sampling=256
-</code>
-##GETRECORDINGINFO
-```json
-```
-Returns recording information and channel / electrode information for the recording
-### HTTP Request
-`GET https://development.api.neuropro.ch/api/GETRECORDINGINFO`
-### Query Parameters
-Parameter | Type | Description
---------- | ---- | -----------
-recording_id| | (int)
-### Return
-
-Recording detailed information
-
-### Example Call
-<code>
-[BASE-URL]api/getrecordinginfo?session_id=###;jsessionid&username=winam&recording_id=nnn
-</code>
-##GETSEIZURES
-```json
-```
-Returns seizure information for a recording (if available)
-### HTTP Request
-`GET https://development.api.neuropro.ch/api/GETSEIZURES`
-### Query Parameters
-Parameter | Type | Description
---------- | ---- | -----------
-recording_id| | (int) page
-pagesize (default 10)
-### Return
-
-JSON array of seizures
-
-### Example Call
-<code>
-[BASE-URL]api/GetSeizures?session_id=###;jsessionid&recording_id=100103
-</code>
-
 # Annotations/Events
 
 ##CREATENOTE
@@ -639,8 +657,8 @@ Parameter | Type | Description
 username| [String] | Username of logged-in user 
 type | [char] | Type of note. Can be a,e,s,o : a:annotation, e:event, s:seizure, o:other
 note |[String] | Content of the note (comment)
-from_t |[Time] | Relative start time of event (note) in format h*:mm:ss
-to_t |[Time] | Relative end time of event (note) in format h*:mm:ss
+from_t |string | Relative start time of event (note) in format h*:mm:ss
+to_t |string | Relative end time of event (note) in format h*:mm:ss
 c_label| [String] | Channel label
 recording_id| [int] | Recording id to add note to
 channel |[int] | number of channel of note. If this is set to 0, note will be added on all channels.
@@ -693,8 +711,8 @@ Parameter | Type | Description
 --------- | ---- | -----------
 note_id | [int] | id of note to delete.
 note | [String] | Content of the note (comment)
-from_t | [Time] | Relative start time of event (note) in format h*:mm:ss
-to_t | [Time] | Relative end time of event (note) in format h*:mm:ss
+from_t | string | Relative start time of event (note) in format h*:mm:ss
+to_t | string | Relative end time of event (note) in format h*:mm:ss
 username | [String] | Username of logged-in user.
 ### Return
 ### Example Call
@@ -722,7 +740,7 @@ username | [String] | Username of logged-in user.
 <code>
 </code>
 
-##SaveNoteGroup
+##SAVENOTEGROUP
 Creates new notes group.
 ```json
 ```
@@ -740,7 +758,7 @@ username | [String] | Username of logged-in user.
 ### Example Call
 <code>
 </code>
-##SaveNoteCategory
+##SAVENOTECATEGORY
 Creates new category for notes based on group.
 ```json
 ```
@@ -759,7 +777,7 @@ username | [String] | Username of logged-in user.
 ### Example Call
 <code>
 </code>
-##DeleteNoteCategory
+##DELETENOTECATEGORY
 Deletes notes group.
 ```json
 ```
@@ -780,6 +798,39 @@ username | [String] | Username of logged-in user.
 
 #Bookmark
 
+##GETBOOKMARKLIST
+```json
+{
+  "BOOKMARKLIST": [
+    {
+      "id": 59,
+      "name": "J list",
+      "seq_no": 0
+    },
+    {
+      "id": 61,
+      "name": "Epi set 1",
+      "seq_no": 1
+    },
+    ],
+  "SUCCESS": 1
+}
+```
+Returns list of user's bookmarks.
+### HTTP Request
+`GET https://development.api.neuropro.ch/api/GETBOOKMARKLIST`
+### Query Parameters
+Parameter | Type | Description
+--------- | ---- | -----------
+NONE||
+### Return
+
+ID of generated bookmark item
+
+### Example Call
+<code>
+[BASE-URL]api/addtobookmark?session_id=###;jsessionid#@username=winam&case_id=nnn&seq_no=m
+</code>
 ##ADDTOBOOKMARK
 ```json
 ```
@@ -789,9 +840,9 @@ Adds a case to user's bookmark list for future quick access
 ### Query Parameters
 Parameter | Type | Description
 --------- | ---- | -----------
-case_id| | (int)
-seq_no| | (int)
-3 – list_id
+case_id| int | Id of the case.
+seq_no| int | Position of the bookmark in user's bookmark list.
+list_id | ID of the bookmark list.
 ### Return
 
 ID of generated bookmark item
@@ -816,7 +867,7 @@ ID of deleted item
 
 ### Example Call
 <code>
-[BASE-URL]api/removebookmark?session_id=###;jsessionid#&username=winam&bookmark_id=nnn
+[BASE-URL]api/removebookmark;jsessionid=###?username=winam&bookmark_id=nnn
 </code>
 ##UPDATEBOOKMARK
 ```json
@@ -835,28 +886,10 @@ ID of updated item
 
 ### Example Call
 <code>
-[BASEURL]api/updatebookmark?session_id=###;jsessionid#&username=winam&bookmark_id=nn&seq_no=mm
+[BASEURL]api/updatebookmark;jsessionid=###?username=winam&bookmark_id=nn&seq_no=mm
 </code>
-##SAVECHANNELSEQUENCE
-```json
-```
-Saves channel display sequence for a recording per user.
-### HTTP Request
-`GET https://development.api.neuropro.ch/api/SAVECHANNELSEQUENCE`
-### Query Parameters
-Parameter | Type | Description
---------- | ---- | -----------
-username | | 
-recording_id | | 
-seq| | a comma separated list of channel numbers in the order of display. If a channel is hidden, do not include in the list.
-### Return
 
-success/failure
-
-### Example Call
-<code>
-/api/savechannelsequence?session_id=<####>&username=winam&recording_id=nnn&seq=n,m,k,l,p
-</code>
+#Signal Processing
 ##POWERSPECTRUM
 ```json
 ```
@@ -867,9 +900,9 @@ Generate a power spectrum of the recording or a segment of the recording for 1 o
 Parameter | Type | Description
 --------- | ---- | -----------
 recording_id | long | Id of recording desired. 
-channel| | [integer or comma separated list; 0 for all channels]
-from_t |[Time] | Relative start time of event (note) in format hh:mm:ss
-to_t | [Time] | Relative end time of event (note) in format hh:mm:ss
+channel| string | [integer or comma separated list; 0 for all channels]
+from_t | string | Relative start time of analysis in format hh:mm:ss
+to_t | string | Relative end time of analysis in format hh:mm:ss
 token | |
 Python | | 
 based | | 
@@ -879,6 +912,33 @@ based | |
 ### Example Call
 <code>
 </code>
+
+##HEATMAP
+```json
+```
+Calculates a heat map representation of an EEG recording
+### HTTP Request
+`GET https://development.api.neuropro.ch/api/HEATMAP`
+### Query Parameters
+Parameter | Type | Description
+--------- | ---- | -----------
+color_map| string | Name of the color map. (default "")
+rawdata | boolean | (true/false) returns json or images.
+recording_id | int | ID of the recording.
+channel | string | Channel number of comma-separated list of channels
+from_t | string | Relative start time of analysis in format hh:mm:ss
+to_t | string | Relative end time of analysis in format hh:mm:ss
+token | |
+### Return
+
+Json array containing links to images or json data
+
+### Example Call
+<code>
+</code>
+
+
+#Montage
 ##SAVEMONTAGEDEF
 ```json
 ```
@@ -888,19 +948,13 @@ Saves a new montage configuration to DB
 ### Query Parameters
 Parameter | Type | Description
 --------- | ---- | -----------
-user | | 
-montage_label | | 
-montage_type | | 
-montage_mapping| | [e.g.: FP1:A1;FP2:A1;A1:A1;A2:A1, ...]
-Comment"
-Pre | | 
-built| | montages are available to all users, and users can define new ones.
-Montag_type
-"Longitudinal bipolar"
-"Transverse bipolar"
-"Referential"
-"Referential average"
-"Custom"
+username | string | Username of logged-in user. 
+montage_label | string | Label for new montage.
+montage_type | string | either of : [ "Longitudinal bipolar" , "Transverse bipolar" , "Referential" , "Referential average" ,"Custom" ]
+montage_mapping| string | [e.g.: FP1:A1;FP2:A1;A1:A1;A2:A1, ...]
+<aside class="notice">
+	Pre-built montages are available to all users, and users can define new ones.
+</aside>
 ### Return
 
 
@@ -916,9 +970,9 @@ Update an existing montage confugration in DB
 ### Query Parameters
 Parameter | Type | Description
 --------- | ---- | -----------
-montage_id | | 
-montage_mapping"
-3| | – montage_label (optional)
+montage_id | int | ID of existing custom montage.
+montage_mapping | string | [e.g.: FP1:A1;FP2:A1;A1:A1;A2:A1, ...].
+montage_label | string | (optional) New label for montage.
 ### Return
 
 
@@ -934,53 +988,57 @@ Removes an existing montage configuration in DB
 ### Query Parameters
 Parameter | Type | Description
 --------- | ---- | -----------
-montage_id | | 
+montage_id | int  | ID of existing custom montage.
 ### Return
 
 
 ### Example Call
 <code>
 </code>
-##SAVEFILTEREDEFSAVEFILTERDEF
+
+#Filters
+##SAVEFILTERDEF
 ```json
 ```
 
 ### HTTP Request
-`GET https://development.api.neuropro.ch/api/SAVEFILTEREDEFSAVEFILTERDEF`
+`GET https://development.api.neuropro.ch/api/SAVEFILTERDEF`
 ### Query Parameters
 Parameter | Type | Description
 --------- | ---- | -----------
-user | | 
-filter_label | | 
-filter_design | | 
-filter_type| | ('LP','HP','BP','NF'   )
-l_frequency | | 
-uh_frequency | | 
-order | | 
-comment | | 
+username | string | Username of logged-in user. 
+recording_id| int | ID of the recording.
+filter_label | string | Label for new filter.
+filter_design | string | Filter definition.
+filter_type| string | either of : ('LP','HP','BP','NF')
+l_frequency | float | Low frequency.
+h_frequency | float` | High frequency.
+order | int | Order of the filter for recording.
+comment | string | Comment about filter.
 ### Return
 
 
 ### Example Call
 <code>
 </code>
-##EDITFILTEREDEFEDITFILTERDEF
+##EDITFILTERDEF
 ```json
 ```
 
 ### HTTP Request
-`GET https://development.api.neuropro.ch/api/EDITFILTEREDEFEDITFILTERDEF`
+`GET https://development.api.neuropro.ch/api/EDITFILTERDEF`
 ### Query Parameters
 Parameter | Type | Description
 --------- | ---- | -----------
-filter_id | | 
-filter_label | | 
-filter_design | | 
-filter_type | | 
-l_frequency | | 
-uh_frequency | | 
-order | | 
-comment | | 
+username | string | Username of logged-in user. 
+filter_id| int | ID of filter to edit.
+filter_label | string | Label for new filter.
+filter_design | string | Filter definition.
+filter_type| string | either of : ('LP','HP','BP','NF')
+l_frequency | float | Low frequency.
+h_frequency | float` | High frequency.
+order | int | Order of the filter for recording.
+comment | string | Comment about filter.
 ### Return
 
 
@@ -996,37 +1054,36 @@ comment | |
 ### Query Parameters
 Parameter | Type | Description
 --------- | ---- | -----------
-filter_id | | 
+filter_id| int | ID of filter to delete.
 ### Return
 
 
 ### Example Call
 <code>
 </code>
-##HEATMAP
+
+#Other
+##SAVECOMMENT
 ```json
 ```
-Calculates a heat map representation of an EEG recording
+Updates comment field on a case, admission, electrode, recording, events, run, or seizure.
 ### HTTP Request
-`GET https://development.api.neuropro.ch/api/HEATMAP`
+`GET https://development.api.neuropro.ch/api/SAVECOMMENT`
 ### Query Parameters
 Parameter | Type | Description
 --------- | ---- | -----------
-1 | | 
-color_map| | (default "")
-2 – rawdata (true/false) returns json or images
-3
-recording_id
-4| | – channel
-5 – from_t
-6 – to_t
-7 – token
-### Return
-
-Json array containing links to images or json data
-
+object_id | int | ID of the record.
+type | string | Can have the following values: case, admission, electrode, recording, events, run, seizure.
+comment| string | New comment text.
 ### Example Call
 <code>
+Update comment on case id=nn<br>
+[BASE-URL]api/savecomment?session_id=####&username=winam&object_id=nn&type=case&comment=My+case+comment<br>
+**<br>
+Update comment on run id=mm<br>
+[BASE-URL]api/savecomment?session_id=####&username=winam&object_id=nn&type=case&comment=My+run+comment<br>
+<br>
+Update comment on events id=nn<br>
+[BASE-URL]api/savecomment?session_id=####&username=winam&object_id=mm&type=events&comment=My+case+comment
 </code>
-
 
