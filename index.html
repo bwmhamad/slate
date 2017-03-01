@@ -162,218 +162,9 @@ VmlPro Api is the data source of all other clients in Neuropro, providing variet
     You must replace <code>{{session_id}}</code> with key from login endpoint.
 </aside>
 
-<h1 id="mri">MRI</h1>
-
-<h2 id="get-test">Get Test</h2>
-<pre class="highlight json"><code><span class="p">{</span><span class="w">
-  </span><span class="nt">"SUCCESS"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"TEST"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1102</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"provider_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"mri_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"20/9/2002"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"hippocampal_atrophy"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"hippocampal_intensity_incr"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"hippocampal_malrotation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"hippocampal_tumor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"amygdala_atrophy"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"amygdala_intensity_incr"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"amygdala_tumor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"cavernoma"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"angioma"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"aneurysma"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"venous_dysplasia"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"dural_fistula"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"tumor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"cortical_dysplasia"</span><span class="p">:</span><span class="w"> </span><span class="s2">"l"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"tubers"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"polymicrogyria"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"pachygyria"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"lessencephaly"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"schizencephaly"</span><span class="p">:</span><span class="w"> </span><span class="s2">"r"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"hemimegalencephaly"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"contusion"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"ischemic_lesion"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"intracerebral_bleeding"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"atrophy"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"arachnoid_cyst"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"temp_lobe_intensity_incr"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"gray_white_matter_blurring"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"contrast_enhancement"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"micrencephaly"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"megalencephaly"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"hypothalamic_hamartoma"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"hydrocephalus"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"other_cort_developm_malform"</span><span class="p">:</span><span class="w"> </span><span class="s2">"aa"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"files"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-      </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1002102</span><span class="p">,</span><span class="w">
-        </span><span class="nt">"mri_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1102</span><span class="p">,</span><span class="w">
-        </span><span class="nt">"diagnosis"</span><span class="p">:</span><span class="w"> </span><span class="mi">1102</span><span class="p">,</span><span class="w">
-        </span><span class="nt">"image"</span><span class="p">:</span><span class="w"> </span><span class="mi">1002102</span><span class="p">,</span><span class="w">
-        </span><span class="nt">"header"</span><span class="p">:</span><span class="w"> </span><span class="mi">1001102</span><span class="p">,</span><span class="w">
-        </span><span class="nt">"slice"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-        </span><span class="nt">"provider_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-        </span><span class="nt">"series"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Head/Neck series"</span><span class="w">
-      </span><span class="p">}</span><span class="w">
-    </span><span class="p">]</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-<p>Retrieves information about specific MRI test.</p>
-
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/getmritestinfo</code></p>
-
-<h3 id="query-parameters">Query Parameters</h3>
-
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>id</td>
-<td>long</td>
-<td>ID of test to retrieve</td>
-</tr>
-</tbody></table>
-
-<h2 id="get-test-list">Get Test List</h2>
-<pre class="highlight json"><code><span class="p">{</span><span class="w">
-  </span><span class="nt">"SUCCESS"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"TESTS"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="p">{</span><span class="w">
-        </span><span class="err">...</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="p">{</span><span class="w">
-        </span><span class="err">...</span><span class="w">
-    </span><span class="p">}</span><span class="w">
-  </span><span class="p">]</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-<p>Retrieves a list of MRI tests based on authenticated user&rsquo;s provider.</p>
-
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/getmritestlist</code></p>
-
-<h3 id="url-parameters">URL Parameters</h3>
-
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>files</td>
-<td>bool</td>
-<td>If this set to true, list of files will be included with each MRI test. Default: true</td>
-</tr>
-</tbody></table>
-
-<h2 id="get-image-list">Get Image List</h2>
-<pre class="highlight json"><code><span class="p">{</span><span class="w">
-  </span><span class="nt">"SUCCESS"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"FILES"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="p">{</span><span class="w">
-      </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1002102</span><span class="p">,</span><span class="w">
-      </span><span class="nt">"mri_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1102</span><span class="p">,</span><span class="w">
-      </span><span class="nt">"diagnosis"</span><span class="p">:</span><span class="w"> </span><span class="mi">1102</span><span class="p">,</span><span class="w">
-      </span><span class="nt">"image"</span><span class="p">:</span><span class="w"> </span><span class="mi">1002102</span><span class="p">,</span><span class="w">
-      </span><span class="nt">"header"</span><span class="p">:</span><span class="w"> </span><span class="mi">1001102</span><span class="p">,</span><span class="w">
-      </span><span class="nt">"slice"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-      </span><span class="nt">"provider_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-      </span><span class="nt">"series"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Head/Neck series"</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="p">{</span><span class="w">
-      </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">73002102</span><span class="p">,</span><span class="w">
-      </span><span class="nt">"mri_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1102</span><span class="p">,</span><span class="w">
-      </span><span class="nt">"diagnosis"</span><span class="p">:</span><span class="w"> </span><span class="mi">73102</span><span class="p">,</span><span class="w">
-      </span><span class="nt">"image"</span><span class="p">:</span><span class="w"> </span><span class="mi">73002102</span><span class="p">,</span><span class="w">
-      </span><span class="nt">"header"</span><span class="p">:</span><span class="w"> </span><span class="mi">73001102</span><span class="p">,</span><span class="w">
-      </span><span class="nt">"slice"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-      </span><span class="nt">"provider_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
-    </span><span class="p">}</span><span class="w">
-  </span><span class="p">]</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-<p>Retrieves list of DICOM images assosiated with MRI test.</p>
-
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">GET /getMriTestFiles</code></p>
-
-<h3 id="url-parameters">URL Parameters</h3>
-
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>mri_id</td>
-<td>long</td>
-<td>ID of desired MRI test.</td>
-</tr>
-</tbody></table>
-
-<h2 id="get-image-list">Get Image List</h2>
-<pre class="highlight json"><code><span class="p">{</span><span class="w">
-  </span><span class="nt">"SUCCESS"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"TEST"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1002102</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"mri_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1102</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"diagnosis"</span><span class="p">:</span><span class="w"> </span><span class="mi">1102</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"image"</span><span class="p">:</span><span class="w"> </span><span class="mi">1002102</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"header"</span><span class="p">:</span><span class="w"> </span><span class="mi">1001102</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"slice"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"provider_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"series"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Head/Neck series"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://vmlpro-mri.s3.amazonaws.com/..."</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-<p>Retrieves DICOM image by its id along with cloud download link and meta-data.  </p>
-
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/getMriTestFile</code></p>
-
-<h3 id="url-parameters">URL Parameters</h3>
-
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>id</td>
-<td>long</td>
-<td>ID of image to retrieve.</td>
-</tr>
-<tr>
-<td>meta</td>
-<td>bool</td>
-<td>If this is set to true, DICOM image will be parsed and its metadata will be returned.</td>
-</tr>
-</tbody></table>
-
-<aside class="notice">
-    Setting <code>meta=true</code> will cause DICOM image to be pulled from cloud to VmlPro API, slowers the endpoint response significantly.
-</aside>
-
 <h1 id="user-amp-session">User &amp; Session</h1>
 
-<h2 id="login">Login</h2>
+<h2 id="login">LOGIN</h2>
 <pre class="highlight json"><code></code></pre>
 <p>Authenticates user based on username / password combination, and creates the user&rsquo;s application session.</p>
 
@@ -526,7 +317,7 @@ VmlPro Api is the data source of all other clients in Neuropro, providing variet
 <h3 id="example-call">Example Call</h3>
 
 <p><code>
-[BASE-URL]/api/updateuserprofile?session_id=###;jsessionid#&amp;username=winam&amp;fname=####&amp;lname=#####&amp;city=####@type=####
+[BASE-URL]/api/updateuserprofile;jsessionid=###?username=winam&amp;fname=####&amp;lname=#####&amp;city=####@type=####
 </code></p>
 
 <h2 id="uploadphoto">UPLOADPHOTO</h2>
@@ -591,19 +382,19 @@ Photos will be upladed/served from S3.
 </tr>
 </thead><tbody>
 <tr>
-<td>admission_id(int)</td>
-<td></td>
-<td></td>
+<td>admission_id</td>
+<td>int</td>
+<td>ID of case&rsquo;s admission.</td>
 </tr>
 <tr>
 <td>page</td>
-<td></td>
-<td>optional</td>
+<td>int</td>
+<td>(optional) Offset of pagination page. If not set all records will be shown.</td>
 </tr>
 <tr>
 <td>pagesize</td>
-<td></td>
-<td>(default 10)&ldquo;            optional</td>
+<td>int</td>
+<td>(optional) Number of records returned per page (default 10).</td>
 </tr>
 </tbody></table>
 
@@ -614,7 +405,7 @@ Photos will be upladed/served from S3.
 <h3 id="example-call">Example Call</h3>
 
 <p><code>
-[BASE-URL]api/getattachments?session_id=###;jsessionid#&amp;username=winam&amp;admission_id=5001 A case can have one or more addmissions.  Use GETCASEDETAILS (#6) to obtain admission_id
+[BASE-URL]api/getattachments;jsessionid=###?username=winam&amp;admission_id=5001 A case can have one or more addmissions.  Use GETCASEDETAILS (#6) to obtain admission_id
 </code></p>
 
 <h2 id="getcasedetails">GETCASEDETAILS</h2>
@@ -636,14 +427,14 @@ Photos will be upladed/served from S3.
 </thead><tbody>
 <tr>
 <td>case_id</td>
-<td></td>
-<td>(int)</td>
+<td>int</td>
+<td>ID of case to retrieve.</td>
 </tr>
 </tbody></table>
 
 <h3 id="return">Return</h3>
 
-<p>Case information separated into two json elements: caseStatic and caseMeta</p>
+<p>Case information separated into two json elements: caseStatic and caseMeta.</p>
 
 <h3 id="example-call">Example Call</h3>
 
@@ -677,7 +468,7 @@ Photos will be upladed/served from S3.
 <tr>
 <td>page</td>
 <td>int</td>
-<td>Offset of pagination page.</td>
+<td>Offset of pagination page. If not set all records will be shown.</td>
 </tr>
 <tr>
 <td>pagesize</td>
@@ -711,7 +502,11 @@ returns all cases provided by provider_id=1 or provider_id=2
 
 <h2 id="getcasenamelist">GETCASENAMELIST</h2>
 <pre class="highlight json"><code></code></pre>
-<p>Return list of case names for all cases of a provider</p>
+<p>Return list of case names for all cases of user&rsquo;s provider.
+Command can be used to poulate auto-complete textbox in case search screen in client UI.
+<aside class="notice">
+    Note that the list of available providers can be obtained using GETPROVIDERLIST endpoint
+</aside> </p>
 
 <h3 id="http-request">HTTP Request</h3>
 
@@ -727,18 +522,16 @@ returns all cases provided by provider_id=1 or provider_id=2
 </tr>
 </thead><tbody>
 <tr>
-<td>provider_id</td>
-<td></td>
-<td>None…provider will be retrieved from logged in user profile</td>
+<td>page</td>
+<td>int</td>
+<td>Offset of pagination page. If not set all records will be shown.</td>
+</tr>
+<tr>
+<td>pagesize</td>
+<td>int</td>
+<td>Number of records returned in a single call (default 10).</td>
 </tr>
 </tbody></table>
-
-<p>Command can be used to poulate auto
-complete| | textbox in case search screen in client UI.
-Note that the list of available providers can be obtained using GETPROVIDERLIST command (# 9)&rdquo;
-provider_id| | (int)
-page | | 
-pagesize| | (default 10)</p>
 
 <h3 id="return">Return</h3>
 
@@ -771,8 +564,8 @@ pagesize| | (default 10)</p>
 </thead><tbody>
 <tr>
 <td>query_id</td>
-<td></td>
-<td>(int)</td>
+<td>int</td>
+<td>ID of pre-defined query.</td>
 </tr>
 </tbody></table>
 
@@ -781,7 +574,7 @@ pagesize| | (default 10)</p>
 <h3 id="example-call">Example Call</h3>
 
 <p><code>
-[BASE-URL]api/querycases?session_id=###;jsessionid#&amp;query_id=1
+[BASE-URL]api/querycases;jsessionid=###?query_id=1
 </code></p>
 
 <h2 id="deletecasequery">DELETECASEQUERY</h2>
@@ -803,8 +596,8 @@ pagesize| | (default 10)</p>
 </thead><tbody>
 <tr>
 <td>query_id</td>
-<td></td>
-<td>(int)</td>
+<td>int</td>
+<td>ID of pre-defined query.</td>
 </tr>
 </tbody></table>
 
@@ -815,7 +608,7 @@ pagesize| | (default 10)</p>
 <h3 id="example-call">Example Call</h3>
 
 <p><code>
-[BASE-URL]api/deletecasequery?session_id=###;jsessionid#&amp;username=winam&amp;query_id=4
+[BASE-URL]api/deletecasequery;jsessionid=###?username=winam&amp;query_id=4
 </code></p>
 
 <h2 id="getcasequerylist">GETCASEQUERYLIST</h2>
@@ -849,7 +642,7 @@ pagesize| | (default 10)</p>
 <h3 id="example-call">Example Call</h3>
 
 <p><code>
-[BASE-URL]api/getcasequerylist?session_id=###;jsessionid#
+[BASE-URL]api/getcasequerylist;jsessionid=###
 </code></p>
 
 <h2 id="savecasequery">SAVECASEQUERY</h2>
@@ -871,25 +664,29 @@ pagesize| | (default 10)</p>
 </thead><tbody>
 <tr>
 <td>queryname</td>
-<td></td>
-<td>(string)</td>
+<td>string</td>
+<td>Query name.</td>
 </tr>
 <tr>
 <td>and</td>
-<td></td>
-<td></td>
+<td>string</td>
+<td>and operation in form: field,operant,value (see examples).</td>
 </tr>
 <tr>
 <td>or</td>
-<td></td>
-<td>[Either &lsquo;and&rsquo; or &#39;or&rsquo; or both]</td>
+<td>string</td>
+<td>or operation in form: field,operant,value (see examples).</td>
 </tr>
 <tr>
 <td>seq_no</td>
-<td></td>
-<td></td>
+<td>int</td>
+<td>Query position in the list of user&rsquo;s query.</td>
 </tr>
 </tbody></table>
+
+<aside class="notice">
+    Parameters allowed : [Either &lsquo;and&rsquo; or 'or&rsquo; or both]
+</aside>
 
 <h3 id="return">Return</h3>
 
@@ -898,102 +695,10 @@ pagesize| | (default 10)</p>
 <h3 id="example-call">Example Call</h3>
 
 <p><code>
-[BASE-URL]api/savecasequery?session_id=###;jsessionid#&amp;and=case_id,!=,5000^provider_id,=,1&amp;or=case_gender,=,Female&amp;queryname=Test&amp;seq_no=2
+[BASE-URL]api/savecasequery;jsessionid=###?and=case_id,!=,5000^provider_id,=,1&amp;or=case_gender,=,Female&amp;queryname=Test&amp;seq_no=2
 </code></p>
 
-<h1 id="eeg-data">EEG Data</h1>
-
-<h2 id="geteegdata">GETEEGDATA</h2>
-<pre class="highlight json"><code></code></pre>
-<p>Main API for accessing raw EEG data.</p>
-
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/GETEEGDATA</code></p>
-
-<h3 id="query-parameters">Query Parameters</h3>
-
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>recording_id</td>
-<td></td>
-<td>(int)</td>
-</tr>
-<tr>
-<td>channel</td>
-<td></td>
-<td>(String) comma separated list of channels. If channel=0 all channels</td>
-</tr>
-<tr>
-<td>from_t</td>
-<td></td>
-<td>(string: hh:mm:ss)</td>
-</tr>
-<tr>
-<td>to_t</td>
-<td></td>
-<td>(string: hh:mm:ss)</td>
-</tr>
-</tbody></table>
-
-<p>Available filters:
-fALPHA | | 
-fBETA | | 
-fDELTA | | 
-fGAMMA | | 
-fTHETA | | 
-iALPHA | | 
-iBETA | | 
-iBP | | 
-N50 | | 
-iBP | | 
-iDELTA | | 
-iGAMMA | | 
-N50 | | 
-iGAMMA | | 
-iN50 | | 
-iTHETA | | 
-client_sampling| | (int)
-[Example: client_sampling=100, every hundredth EEG data point is returned]
-weight| | (int)
-filter:| | string as defined in E17
-montage_id| | [reference to montage_def table]
-filter_id| | [reference to filter_def table]
-or
-dfilter| | [dynamic filter expression of the following format:
-<filter_type>|<l_frequency>|<u_frequency>|<order>|<design>
-filter_type =
-charecter| | string:
-LP = Low Pass
-HP = High Pass
-BP = Band Pass
-NF = Notch Filter
-l_frequency = Lower frequency
-u_frequency = Upper frequency
-order = filter order [default = 2]
-design = IIR / FIR [default = IIR]
-Recording info + arrays of floats + channel mapping
-Raw non filtered EEG 50 minutes long for channel 1, 5, and 8:</p>
-
-<h3 id="return">Return</h3>
-
-<h3 id="example-call">Example Call</h3>
-
-<p><code>
-[BASE-URL]api/geteegdata?session_id=###;jsessionid&amp;username=winam&amp;recording_id=100102&amp;channel=1,5,8&amp;from_t=00:00:05&amp;to_t=00:55:00
-**
-Raw non filtered EEG 2 hours long from all available channels for the recording scales by a factor of 8:
-[BASE-URL]api/geteegdata?session_id=###;jsessionid&amp;username=winam&amp;recording_id=100102&amp;channel=0&amp;from_t=00:00:00&amp;to_t=02:00:00&amp;weight=8
-**
-Same as above, with client samply = 256
-[BASE-URL]api/geteegdata?session_id=###;jsessionid&amp;username=winam&amp;recording_id=100102&amp;channel=1,5,8&amp;from_t=00:00:05&amp;to_t=00:55:00&amp;wieght=8&amp;client_sampling=256
-</code></p>
+<h1 id="recording">Recording</h1>
 
 <h2 id="getrecordinginfo">GETRECORDINGINFO</h2>
 <pre class="highlight json"><code></code></pre>
@@ -1014,8 +719,8 @@ Same as above, with client samply = 256
 </thead><tbody>
 <tr>
 <td>recording_id</td>
-<td></td>
-<td>(int)</td>
+<td>int</td>
+<td>ID of the recording.</td>
 </tr>
 </tbody></table>
 
@@ -1026,7 +731,153 @@ Same as above, with client samply = 256
 <h3 id="example-call">Example Call</h3>
 
 <p><code>
-[BASE-URL]api/getrecordinginfo?session_id=###;jsessionid&amp;username=winam&amp;recording_id=nnn
+[BASE-URL]api/getrecordinginfo;jsessionid=###?username=winam&amp;recording_id=nnn
+</code></p>
+
+<h2 id="recordinglist">RECORDINGLIST</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Returns list of recordings for logged-in user provider.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/RECORDINGLIST</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>username</td>
+<td>string</td>
+<td>Username of logged-in user.</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<p>Recording list with detailed information.</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+[BASE-URL]api/recordinglist?username=user
+</code></p>
+
+<h2 id="geteegdata">GETEEGDATA</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Main API for accessing raw EEG data.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/GETEEGDATA</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>recording_id</td>
+<td>int</td>
+<td>ID of desired recording.</td>
+</tr>
+<tr>
+<td>channel</td>
+<td>string</td>
+<td>comma separated list of channels. If channel=0 all channels</td>
+</tr>
+<tr>
+<td>from_t</td>
+<td>string</td>
+<td>Relative start of data time in format HH:mm:ss</td>
+</tr>
+<tr>
+<td>to_t</td>
+<td>string</td>
+<td>Relative end of data in format HH:mm:ss</td>
+</tr>
+<tr>
+<td>client_sampling</td>
+<td>int</td>
+<td>[Example: client_sampling=100, every hundredth EEG data point is returned]</td>
+</tr>
+<tr>
+<td>weight</td>
+<td>int</td>
+<td>Weight of data.</td>
+</tr>
+<tr>
+<td>filter</td>
+<td>string</td>
+<td>Available filters: fALPHA , fBETA , fDELTA , fGAMMA , fTHETA , iALPHA , iBETA , iBP , N50 , iBP , iDELTA , iGAMMA , N50 , iGAMMA , iN50 , iTHETA</td>
+</tr>
+<tr>
+<td>montage_id</td>
+<td>int</td>
+<td>reference to montage_def table</td>
+</tr>
+<tr>
+<td>filter_id</td>
+<td>int</td>
+<td>(optional if dfilter is set) reference to filter_def table</td>
+</tr>
+<tr>
+<td>dfilter</td>
+<td>string</td>
+<td>(optional if filter_id is set) dynamic filter expression of the following format: &lt;filter_type&gt;&#124;&lt;l_frequency&gt;&#124;&lt;u_frequency&gt;&#124;&lt;order&gt;&#124;&lt;design&gt;</td>
+</tr>
+<tr>
+<td>filter_type</td>
+<td>2-charecter string</td>
+<td>either of : [ LP = Low Pass , HP = High Pass, BP = Band Pass, NF = Notch Filter</td>
+</tr>
+<tr>
+<td>l_frequency</td>
+<td>int</td>
+<td>Lower frequency</td>
+</tr>
+<tr>
+<td>u_frequency</td>
+<td>int</td>
+<td>Upper frequency</td>
+</tr>
+<tr>
+<td>order</td>
+<td>int</td>
+<td>(optional) filter order [default = 2]</td>
+</tr>
+<tr>
+<td>design</td>
+<td>string</td>
+<td>IIR / FIR [default = IIR]</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<p>Recording info + arrays of floats + channel mapping.</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code></p>
+
+<p>Raw non filtered EEG 50 minutes long for channel 1, 5, and 8:<br>
+[BASE-URL]api/geteegdata;jsessionid=###?username=winam&amp;recording_id=100102&amp;channel=1,5,8&amp;from_t=00:00:05&amp;to_t=00:55:00<br>
+*<em><br>
+Raw non filtered EEG 2 hours long from all available channels for the recording scales by a factor of 8:<br>
+[BASE-URL]api/geteegdata;jsessionid=###?username=winam&amp;recording_id=100102&amp;channel=0&amp;from_t=00:00:00&amp;to_t=02:00:00&amp;weight=8<br>
+*</em><br>
+Same as above, with client samply = 256:<br>
+[BASE-URL]api/geteegdata;jsessionid=###?username=winam&amp;recording_id=100102&amp;channel=1,5,8&amp;from_t=00:00:05&amp;to_t=00:55:00&amp;wieght=8&amp;client_sampling=256<br>
 </code></p>
 
 <h2 id="getseizures">GETSEIZURES</h2>
@@ -1048,12 +899,20 @@ Same as above, with client samply = 256
 </thead><tbody>
 <tr>
 <td>recording_id</td>
-<td></td>
-<td>(int) page</td>
+<td>int</td>
+<td>ID of the rexording</td>
+</tr>
+<tr>
+<td>page</td>
+<td>int</td>
+<td>(optional) Offset of pagination page. If not set all records will be shown.</td>
+</tr>
+<tr>
+<td>pagesize</td>
+<td>int</td>
+<td>(optional) Number of records returned per page (default 10).</td>
 </tr>
 </tbody></table>
-
-<p>pagesize (default 10)</p>
 
 <h3 id="return">Return</h3>
 
@@ -1062,8 +921,261 @@ Same as above, with client samply = 256
 <h3 id="example-call">Example Call</h3>
 
 <p><code>
-[BASE-URL]api/GetSeizures?session_id=###;jsessionid&amp;recording_id=100103
+[BASE-URL]api/GetSeizures;jsessionid=###?recording_id=100103
 </code></p>
+
+<h2 id="savechannelsequence">SAVECHANNELSEQUENCE</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Saves channel display sequence for a recording per user.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/SAVECHANNELSEQUENCE</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>username</td>
+<td>string</td>
+<td>Username of logged-in user.</td>
+</tr>
+<tr>
+<td>recording_id</td>
+<td>int</td>
+<td>ID of the recording.</td>
+</tr>
+<tr>
+<td>seq</td>
+<td>string</td>
+<td>a comma separated list of channel numbers in the order of display. If a channel is hidden, do not include in the list.</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<p>success/failure</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+/api/savechannelsequence;jsessionid=###?username=winam&amp;recording_id=nnn&amp;seq=n,m,k,l,p
+</code></p>
+
+<h1 id="mri">MRI</h1>
+
+<h2 id="getmritestinfo">GETMRITESTINFO</h2>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"SUCCESS"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"TEST"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1102</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"provider_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"mri_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"20/9/2002"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"hippocampal_atrophy"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"hippocampal_intensity_incr"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"hippocampal_malrotation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"hippocampal_tumor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"amygdala_atrophy"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"amygdala_intensity_incr"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"amygdala_tumor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"cavernoma"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"angioma"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"aneurysma"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"venous_dysplasia"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"dural_fistula"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"tumor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"cortical_dysplasia"</span><span class="p">:</span><span class="w"> </span><span class="s2">"l"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"tubers"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"polymicrogyria"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"pachygyria"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"lessencephaly"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"schizencephaly"</span><span class="p">:</span><span class="w"> </span><span class="s2">"r"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"hemimegalencephaly"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"contusion"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"ischemic_lesion"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"intracerebral_bleeding"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"atrophy"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"arachnoid_cyst"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"temp_lobe_intensity_incr"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"gray_white_matter_blurring"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"contrast_enhancement"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"micrencephaly"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"megalencephaly"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"hypothalamic_hamartoma"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"hydrocephalus"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"other_cort_developm_malform"</span><span class="p">:</span><span class="w"> </span><span class="s2">"aa"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"files"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1002102</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"mri_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1102</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"diagnosis"</span><span class="p">:</span><span class="w"> </span><span class="mi">1102</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"image"</span><span class="p">:</span><span class="w"> </span><span class="mi">1002102</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"header"</span><span class="p">:</span><span class="w"> </span><span class="mi">1001102</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"slice"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"provider_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"series"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Head/Neck series"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Retrieves information about specific MRI test.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/getmritestinfo</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>long</td>
+<td>ID of test to retrieve</td>
+</tr>
+</tbody></table>
+
+<h2 id="getmritestlist">GETMRITESTLIST</h2>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"SUCCESS"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"TESTS"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="err">...</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="err">...</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Retrieves a list of MRI tests based on authenticated user&rsquo;s provider.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/getmritestlist</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>files</td>
+<td>bool</td>
+<td>If this set to true, list of files will be included with each MRI test. Default: true</td>
+</tr>
+</tbody></table>
+
+<h2 id="getmritestfiles">GETMRITESTFILES</h2>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"SUCCESS"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"FILES"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1002102</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"mri_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1102</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"diagnosis"</span><span class="p">:</span><span class="w"> </span><span class="mi">1102</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"image"</span><span class="p">:</span><span class="w"> </span><span class="mi">1002102</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"header"</span><span class="p">:</span><span class="w"> </span><span class="mi">1001102</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"slice"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"provider_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"series"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Head/Neck series"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">73002102</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"mri_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1102</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"diagnosis"</span><span class="p">:</span><span class="w"> </span><span class="mi">73102</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"image"</span><span class="p">:</span><span class="w"> </span><span class="mi">73002102</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"header"</span><span class="p">:</span><span class="w"> </span><span class="mi">73001102</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"slice"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"provider_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Retrieves list of DICOM images assosiated with MRI test.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /getMriTestFiles</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>mri_id</td>
+<td>long</td>
+<td>ID of desired MRI test.</td>
+</tr>
+</tbody></table>
+
+<h2 id="getmritestfile">GETMRITESTFILE</h2>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"SUCCESS"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"TEST"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1002102</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"mri_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1102</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"diagnosis"</span><span class="p">:</span><span class="w"> </span><span class="mi">1102</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"image"</span><span class="p">:</span><span class="w"> </span><span class="mi">1002102</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"header"</span><span class="p">:</span><span class="w"> </span><span class="mi">1001102</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"slice"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"provider_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"series"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Head/Neck series"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://vmlpro-mri.s3.amazonaws.com/..."</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Retrieves DICOM image by its id along with cloud download link and meta-data.  </p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/getMriTestFile</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>long</td>
+<td>ID of image to retrieve.</td>
+</tr>
+<tr>
+<td>meta</td>
+<td>bool</td>
+<td>If this is set to true, DICOM image will be parsed and its metadata will be returned.</td>
+</tr>
+</tbody></table>
+
+<aside class="notice">
+    Setting <code>meta=true</code> will cause DICOM image to be pulled from cloud to VmlPro API, slowers the endpoint response significantly.
+</aside>
 
 <h1 id="annotations-events">Annotations/Events</h1>
 
@@ -1101,12 +1213,12 @@ Same as above, with client samply = 256
 </tr>
 <tr>
 <td>from_t</td>
-<td>[Time]</td>
+<td>string</td>
 <td>Relative start time of event (note) in format h*:mm:ss</td>
 </tr>
 <tr>
 <td>to_t</td>
-<td>[Time]</td>
+<td>string</td>
 <td>Relative end time of event (note) in format h*:mm:ss</td>
 </tr>
 <tr>
@@ -1244,12 +1356,12 @@ Same as above, with client samply = 256
 </tr>
 <tr>
 <td>from_t</td>
-<td>[Time]</td>
+<td>string</td>
 <td>Relative start time of event (note) in format h*:mm:ss</td>
 </tr>
 <tr>
 <td>to_t</td>
-<td>[Time]</td>
+<td>string</td>
 <td>Relative end time of event (note) in format h*:mm:ss</td>
 </tr>
 <tr>
@@ -1305,7 +1417,7 @@ Same as above, with client samply = 256
 <p><code>
 </code></p>
 
-<h2 id="savenotegroup">SaveNoteGroup</h2>
+<h2 id="savenotegroup">SAVENOTEGROUP</h2>
 
 <p>Creates new notes group.
 <code class="prettyprint">json
@@ -1343,7 +1455,7 @@ Same as above, with client samply = 256
 <p><code>
 </code></p>
 
-<h2 id="savenotecategory">SaveNoteCategory</h2>
+<h2 id="savenotecategory">SAVENOTECATEGORY</h2>
 
 <p>Creates new category for notes based on group.
 <code class="prettyprint">json
@@ -1386,7 +1498,7 @@ Same as above, with client samply = 256
 <p><code>
 </code></p>
 
-<h2 id="deletenotecategory">DeleteNoteCategory</h2>
+<h2 id="deletenotecategory">DELETENOTECATEGORY</h2>
 
 <p>Deletes notes group.
 <code class="prettyprint">json
@@ -1426,6 +1538,55 @@ Same as above, with client samply = 256
 
 <h1 id="bookmark">Bookmark</h1>
 
+<h2 id="getbookmarklist">GETBOOKMARKLIST</h2>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"BOOKMARKLIST"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">59</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"J list"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"seq_no"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">61</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Epi set 1"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"seq_no"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+  </span><span class="nt">"SUCCESS"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Returns list of user&rsquo;s bookmarks.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/GETBOOKMARKLIST</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>NONE</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<p>ID of generated bookmark item</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+[BASE-URL]api/addtobookmark?session_id=###;jsessionid#@username=winam&amp;case_id=nnn&amp;seq_no=m
+</code></p>
+
 <h2 id="addtobookmark">ADDTOBOOKMARK</h2>
 <pre class="highlight json"><code></code></pre>
 <p>Adds a case to user&rsquo;s bookmark list for future quick access</p>
@@ -1445,17 +1606,20 @@ Same as above, with client samply = 256
 </thead><tbody>
 <tr>
 <td>case_id</td>
-<td></td>
-<td>(int)</td>
+<td>int</td>
+<td>Id of the case.</td>
 </tr>
 <tr>
 <td>seq_no</td>
+<td>int</td>
+<td>Position of the bookmark in user&rsquo;s bookmark list.</td>
+</tr>
+<tr>
+<td>list_id</td>
+<td>ID of the bookmark list.</td>
 <td></td>
-<td>(int)</td>
 </tr>
 </tbody></table>
-
-<p>3 – list_id</p>
 
 <h3 id="return">Return</h3>
 
@@ -1498,7 +1662,7 @@ Same as above, with client samply = 256
 <h3 id="example-call">Example Call</h3>
 
 <p><code>
-[BASE-URL]api/removebookmark?session_id=###;jsessionid#&amp;username=winam&amp;bookmark_id=nnn
+[BASE-URL]api/removebookmark;jsessionid=###?username=winam&amp;bookmark_id=nnn
 </code></p>
 
 <h2 id="updatebookmark">UPDATEBOOKMARK</h2>
@@ -1537,52 +1701,10 @@ Same as above, with client samply = 256
 <h3 id="example-call">Example Call</h3>
 
 <p><code>
-[BASEURL]api/updatebookmark?session_id=###;jsessionid#&amp;username=winam&amp;bookmark_id=nn&amp;seq_no=mm
+[BASEURL]api/updatebookmark;jsessionid=###?username=winam&amp;bookmark_id=nn&amp;seq_no=mm
 </code></p>
 
-<h2 id="savechannelsequence">SAVECHANNELSEQUENCE</h2>
-<pre class="highlight json"><code></code></pre>
-<p>Saves channel display sequence for a recording per user.</p>
-
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/SAVECHANNELSEQUENCE</code></p>
-
-<h3 id="query-parameters">Query Parameters</h3>
-
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>username</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>recording_id</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>seq</td>
-<td></td>
-<td>a comma separated list of channel numbers in the order of display. If a channel is hidden, do not include in the list.</td>
-</tr>
-</tbody></table>
-
-<h3 id="return">Return</h3>
-
-<p>success/failure</p>
-
-<h3 id="example-call">Example Call</h3>
-
-<p><code>
-/api/savechannelsequence?session_id=&lt;####&gt;&amp;username=winam&amp;recording_id=nnn&amp;seq=n,m,k,l,p
-</code></p>
+<h1 id="signal-processing">Signal Processing</h1>
 
 <h2 id="powerspectrum">POWERSPECTRUM</h2>
 <pre class="highlight json"><code></code></pre>
@@ -1608,18 +1730,18 @@ Same as above, with client samply = 256
 </tr>
 <tr>
 <td>channel</td>
-<td></td>
+<td>string</td>
 <td>[integer or comma separated list; 0 for all channels]</td>
 </tr>
 <tr>
 <td>from_t</td>
-<td>[Time]</td>
-<td>Relative start time of event (note) in format hh:mm:ss</td>
+<td>string</td>
+<td>Relative start time of analysis in format hh:mm:ss</td>
 </tr>
 <tr>
 <td>to_t</td>
-<td>[Time]</td>
-<td>Relative end time of event (note) in format hh:mm:ss</td>
+<td>string</td>
+<td>Relative end time of analysis in format hh:mm:ss</td>
 </tr>
 <tr>
 <td>token</td>
@@ -1633,284 +1755,6 @@ Same as above, with client samply = 256
 </tr>
 <tr>
 <td>based</td>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
-
-<h3 id="return">Return</h3>
-
-<h3 id="example-call">Example Call</h3>
-
-<p><code>
-</code></p>
-
-<h2 id="savemontagedef">SAVEMONTAGEDEF</h2>
-<pre class="highlight json"><code></code></pre>
-<p>Saves a new montage configuration to DB</p>
-
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/SAVEMONTAGEDEF</code></p>
-
-<h3 id="query-parameters">Query Parameters</h3>
-
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>user</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>montage_label</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>montage_type</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>montage_mapping</td>
-<td></td>
-<td>[e.g.: FP1:A1;FP2:A1;A1:A1;A2:A1, &hellip;]</td>
-</tr>
-</tbody></table>
-
-<p>Comment&quot;
-Pre | | 
-built| | montages are available to all users, and users can define new ones.
-Montag_type
-&ldquo;Longitudinal bipolar&rdquo;
-&ldquo;Transverse bipolar&rdquo;
-&ldquo;Referential&rdquo;
-&ldquo;Referential average&rdquo;
-&ldquo;Custom&rdquo;</p>
-
-<h3 id="return">Return</h3>
-
-<h3 id="example-call">Example Call</h3>
-
-<p><code>
-</code></p>
-
-<h2 id="editmontagedef">EDITMONTAGEDEF</h2>
-<pre class="highlight json"><code></code></pre>
-<p>Update an existing montage confugration in DB</p>
-
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/EDITMONTAGEDEF</code></p>
-
-<h3 id="query-parameters">Query Parameters</h3>
-
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>montage_id</td>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
-
-<p>montage_mapping&quot;
-3| | – montage_label (optional)</p>
-
-<h3 id="return">Return</h3>
-
-<h3 id="example-call">Example Call</h3>
-
-<p><code>
-</code></p>
-
-<h2 id="deletemontagedef">DELETEMONTAGEDEF</h2>
-<pre class="highlight json"><code></code></pre>
-<p>Removes an existing montage configuration in DB</p>
-
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/DELETEMONTAGEDEF</code></p>
-
-<h3 id="query-parameters">Query Parameters</h3>
-
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>montage_id</td>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
-
-<h3 id="return">Return</h3>
-
-<h3 id="example-call">Example Call</h3>
-
-<p><code>
-</code></p>
-
-<h2 id="savefilteredefsavefilterdef">SAVEFILTEREDEFSAVEFILTERDEF</h2>
-<pre class="highlight json"><code></code></pre>
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/SAVEFILTEREDEFSAVEFILTERDEF</code></p>
-
-<h3 id="query-parameters">Query Parameters</h3>
-
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>user</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>filter_label</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>filter_design</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>filter_type</td>
-<td></td>
-<td>(&#39;LP&rsquo;,&#39;HP&rsquo;,&#39;BP&rsquo;,&#39;NF&rsquo;   )</td>
-</tr>
-<tr>
-<td>l_frequency</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>uh_frequency</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>order</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>comment</td>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
-
-<h3 id="return">Return</h3>
-
-<h3 id="example-call">Example Call</h3>
-
-<p><code>
-</code></p>
-
-<h2 id="editfilteredefeditfilterdef">EDITFILTEREDEFEDITFILTERDEF</h2>
-<pre class="highlight json"><code></code></pre>
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/EDITFILTEREDEFEDITFILTERDEF</code></p>
-
-<h3 id="query-parameters">Query Parameters</h3>
-
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>filter_id</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>filter_label</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>filter_design</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>filter_type</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>l_frequency</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>uh_frequency</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>order</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>comment</td>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
-
-<h3 id="return">Return</h3>
-
-<h3 id="example-call">Example Call</h3>
-
-<p><code>
-</code></p>
-
-<h2 id="deletefilterdef">DELETEFILTERDEF</h2>
-<pre class="highlight json"><code></code></pre>
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/DELETEFILTERDEF</code></p>
-
-<h3 id="query-parameters">Query Parameters</h3>
-
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>filter_id</td>
 <td></td>
 <td></td>
 </tr>
@@ -1941,24 +1785,41 @@ Montag_type
 </tr>
 </thead><tbody>
 <tr>
-<td>1</td>
-<td></td>
-<td></td>
+<td>color_map</td>
+<td>string</td>
+<td>Name of the color map. (default &ldquo;&rdquo;)</td>
 </tr>
 <tr>
-<td>color_map</td>
+<td>rawdata</td>
+<td>boolean</td>
+<td>(true/false) returns json or images.</td>
+</tr>
+<tr>
+<td>recording_id</td>
+<td>int</td>
+<td>ID of the recording.</td>
+</tr>
+<tr>
+<td>channel</td>
+<td>string</td>
+<td>Channel number of comma-separated list of channels</td>
+</tr>
+<tr>
+<td>from_t</td>
+<td>string</td>
+<td>Relative start time of analysis in format hh:mm:ss</td>
+</tr>
+<tr>
+<td>to_t</td>
+<td>string</td>
+<td>Relative end time of analysis in format hh:mm:ss</td>
+</tr>
+<tr>
+<td>token</td>
 <td></td>
-<td>(default &ldquo;&rdquo;)</td>
+<td></td>
 </tr>
 </tbody></table>
-
-<p>2 – rawdata (true/false) returns json or images
-3
-recording_id
-4| | – channel
-5 – from_t
-6 – to_t
-7 – token</p>
 
 <h3 id="return">Return</h3>
 
@@ -1967,6 +1828,348 @@ recording_id
 <h3 id="example-call">Example Call</h3>
 
 <p><code>
+</code></p>
+
+<h1 id="montage">Montage</h1>
+
+<h2 id="savemontagedef">SAVEMONTAGEDEF</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Saves a new montage configuration to DB</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/SAVEMONTAGEDEF</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>username</td>
+<td>string</td>
+<td>Username of logged-in user.</td>
+</tr>
+<tr>
+<td>montage_label</td>
+<td>string</td>
+<td>Label for new montage.</td>
+</tr>
+<tr>
+<td>montage_type</td>
+<td>string</td>
+<td>either of : [ &ldquo;Longitudinal bipolar&rdquo; , &ldquo;Transverse bipolar&rdquo; , &ldquo;Referential&rdquo; , &ldquo;Referential average&rdquo; ,&ldquo;Custom&rdquo; ]</td>
+</tr>
+<tr>
+<td>montage_mapping</td>
+<td>string</td>
+<td>[e.g.: FP1:A1;FP2:A1;A1:A1;A2:A1, &hellip;]</td>
+</tr>
+</tbody></table>
+
+<aside class="notice">
+    Pre-built montages are available to all users, and users can define new ones.
+</aside>
+
+<h3 id="return">Return</h3>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+</code></p>
+
+<h2 id="editmontagedef">EDITMONTAGEDEF</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Update an existing montage confugration in DB</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/EDITMONTAGEDEF</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>montage_id</td>
+<td>int</td>
+<td>ID of existing custom montage.</td>
+</tr>
+<tr>
+<td>montage_mapping</td>
+<td>string</td>
+<td>[e.g.: FP1:A1;FP2:A1;A1:A1;A2:A1, &hellip;].</td>
+</tr>
+<tr>
+<td>montage_label</td>
+<td>string</td>
+<td>(optional) New label for montage.</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+</code></p>
+
+<h2 id="deletemontagedef">DELETEMONTAGEDEF</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Removes an existing montage configuration in DB</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/DELETEMONTAGEDEF</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>montage_id</td>
+<td>int</td>
+<td>ID of existing custom montage.</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+</code></p>
+
+<h1 id="filters">Filters</h1>
+
+<h2 id="savefilterdef">SAVEFILTERDEF</h2>
+<pre class="highlight json"><code></code></pre>
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/SAVEFILTERDEF</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>username</td>
+<td>string</td>
+<td>Username of logged-in user.</td>
+</tr>
+<tr>
+<td>recording_id</td>
+<td>int</td>
+<td>ID of the recording.</td>
+</tr>
+<tr>
+<td>filter_label</td>
+<td>string</td>
+<td>Label for new filter.</td>
+</tr>
+<tr>
+<td>filter_design</td>
+<td>string</td>
+<td>Filter definition.</td>
+</tr>
+<tr>
+<td>filter_type</td>
+<td>string</td>
+<td>either of : (&#39;LP&rsquo;,&#39;HP&rsquo;,&#39;BP&rsquo;,&#39;NF&rsquo;)</td>
+</tr>
+<tr>
+<td>l_frequency</td>
+<td>float</td>
+<td>Low frequency.</td>
+</tr>
+<tr>
+<td>h_frequency</td>
+<td>float`</td>
+<td>High frequency.</td>
+</tr>
+<tr>
+<td>order</td>
+<td>int</td>
+<td>Order of the filter for recording.</td>
+</tr>
+<tr>
+<td>comment</td>
+<td>string</td>
+<td>Comment about filter.</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+</code></p>
+
+<h2 id="editfilterdef">EDITFILTERDEF</h2>
+<pre class="highlight json"><code></code></pre>
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/EDITFILTERDEF</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>username</td>
+<td>string</td>
+<td>Username of logged-in user.</td>
+</tr>
+<tr>
+<td>filter_id</td>
+<td>int</td>
+<td>ID of filter to edit.</td>
+</tr>
+<tr>
+<td>filter_label</td>
+<td>string</td>
+<td>Label for new filter.</td>
+</tr>
+<tr>
+<td>filter_design</td>
+<td>string</td>
+<td>Filter definition.</td>
+</tr>
+<tr>
+<td>filter_type</td>
+<td>string</td>
+<td>either of : (&#39;LP&rsquo;,&#39;HP&rsquo;,&#39;BP&rsquo;,&#39;NF&rsquo;)</td>
+</tr>
+<tr>
+<td>l_frequency</td>
+<td>float</td>
+<td>Low frequency.</td>
+</tr>
+<tr>
+<td>h_frequency</td>
+<td>float`</td>
+<td>High frequency.</td>
+</tr>
+<tr>
+<td>order</td>
+<td>int</td>
+<td>Order of the filter for recording.</td>
+</tr>
+<tr>
+<td>comment</td>
+<td>string</td>
+<td>Comment about filter.</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+</code></p>
+
+<h2 id="deletefilterdef">DELETEFILTERDEF</h2>
+<pre class="highlight json"><code></code></pre>
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/DELETEFILTERDEF</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>filter_id</td>
+<td>int</td>
+<td>ID of filter to delete.</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+</code></p>
+
+<h1 id="other">Other</h1>
+
+<h2 id="savecomment">SAVECOMMENT</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Updates comment field on a case, admission, electrode, recording, events, run, or seizure.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/SAVECOMMENT</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>object_id</td>
+<td>int</td>
+<td>ID of the record.</td>
+</tr>
+<tr>
+<td>type</td>
+<td>string</td>
+<td>Can have the following values: case, admission, electrode, recording, events, run, seizure.</td>
+</tr>
+<tr>
+<td>comment</td>
+<td>string</td>
+<td>New comment text.</td>
+</tr>
+</tbody></table>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+Update comment on case id=nn<br>
+[BASE-URL]api/savecomment?session_id=####&amp;username=winam&amp;object_id=nn&amp;type=case&amp;comment=My+case+comment<br>
+**<br>
+Update comment on run id=mm<br>
+[BASE-URL]api/savecomment?session_id=####&amp;username=winam&amp;object_id=nn&amp;type=case&amp;comment=My+run+comment<br>
+<br>
+Update comment on events id=nn<br>
+[BASE-URL]api/savecomment?session_id=####&amp;username=winam&amp;object_id=mm&amp;type=events&amp;comment=My+case+comment
 </code></p>
 
       </div>
