@@ -698,6 +698,56 @@ Command can be used to poulate auto-complete textbox in case search screen in cl
 [BASE-URL]api/savecasequery;jsessionid=###?and=case_id,!=,5000^provider_id,=,1&amp;or=case_gender,=,Female&amp;queryname=Test&amp;seq_no=2
 </code></p>
 
+<h2 id="updatecasestatus">UPDATECASESTATUS</h2>
+
+<p>Changes case status either to active or inactive.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/UPDATECASESTATUS</code>
+<code class="prettyprint">json
+{
+  &quot;SUCCESS&quot;: 1,
+  &quot;SESSION_ID&quot;: null
+}
+</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>username</td>
+<td>string</td>
+<td>Username of logged-in user.</td>
+</tr>
+<tr>
+<td>case_id</td>
+<td>int</td>
+<td>Numeric id of target case.</td>
+</tr>
+<tr>
+<td>status</td>
+<td>int</td>
+<td>should be 0 for inactive or 1 for active</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<p>success/failure</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+{{root}}/UPDATECASESTATUS?username=###&amp;case_id=6000075&amp;status=1
+</code></p>
+
 <h1 id="recording">Recording</h1>
 
 <h2 id="getrecordinginfo">GETRECORDINGINFO</h2>
@@ -966,6 +1016,790 @@ Same as above, with client samply = 256:<br>
 
 <p><code>
 /api/savechannelsequence;jsessionid=###?username=winam&amp;recording_id=nnn&amp;seq=n,m,k,l,p
+</code></p>
+
+<h1 id="groups">Groups</h1>
+
+<p>Groups are used to limit user&rsquo;s access to some recordings within the provider.<br>
+There are 2 types of groups: restricted and non restricted.<br>
+If user belongs to any unrestricted group then he&rsquo;ll have access to all provided&rsquo;s recordings. All other groups will be ignored.<br>
+If user belongs to one or multiple restricted groups, then he (user) only has access to recordings mapped to those groups. (union of all recordings of all restricted groups)<br>
+There are 2 types of access: read or read/write. If user has read access then he can only view information. With read/write access user can also edit existing information. For example add videos, change recording meta, etc..<br></p>
+
+<h2 id="creategroup">CreateGroup</h2>
+
+<p>Creates new group within logged in user&rsquo;s provider.</p>
+
+<aside class="notice">
+    This endpoint is intended only for users with Provider-Admin or Super-Admin access.
+</aside>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/creategroup</code></p>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"SUCCESS"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"GROUP"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"provider_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"permission"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"g1"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"api group"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"restricted"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>username</td>
+<td>string</td>
+<td>Username of logged-in user.</td>
+</tr>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>Name for newly created group.</td>
+</tr>
+<tr>
+<td>description</td>
+<td>string</td>
+<td>(optional) Comments about this group.</td>
+</tr>
+<tr>
+<td>restricted</td>
+<td>int</td>
+<td>(optional, 0 or 1, default=1) Specifies if current group is restricted or not. 1=restricted, 0=unrestricted.</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<p>success/failure<br>
+Serialized newly created group in JSON format.</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+{{root}}/creategroup?username=###&amp;name=group1&amp;description=thisIsSomeGroup&amp;restricted=0
+</code></p>
+
+<h2 id="deletegroup">DeleteGroup</h2>
+
+<p>Removes entire group from the provider.
+<aside class="notice">
+    This endpoint is intended only for users with Provider-Admin or Super-Admin access.
+</aside>
+<aside class="warning">
+    This action will unassign all users and recordings from the target group. Recording&rsquo;s and user&rsquo;s data will be kept.
+</aside></p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/deletegroup</code></p>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"SUCCESS"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>username</td>
+<td>string</td>
+<td>Username of logged-in user.</td>
+</tr>
+<tr>
+<td>group_id</td>
+<td>int</td>
+<td>ID of the target group.</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<p>success/failure</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+{{root}}/deletegroup?username=###group_id=9
+</code></p>
+
+<h2 id="addgroupuser">AddGroupUser</h2>
+
+<p>Assigns specified user to specified provider&rsquo;s group.</p>
+
+<aside class="notice">
+    This endpoint is intended for users with Provider-Admin or Super-Admin access only.
+</aside>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/AddGroupUser</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>username</td>
+<td>string</td>
+<td>Username of logged-in user.</td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>int</td>
+<td>ID of user you wish to add to the group. Notice: not the username but numeric user id.</td>
+</tr>
+<tr>
+<td>group_id</td>
+<td>int</td>
+<td>ID of group where to add user.</td>
+</tr>
+</tbody></table>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"SUCCESS"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<h3 id="return">Return</h3>
+
+<p>success/failure</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+{{root}}/addgroupuser?username=###&amp;user_id=5&amp;group_id=5
+</code></p>
+
+<h2 id="getgroupusers">GetGroupUsers</h2>
+
+<p>Get list of user&rsquo;s IDs assigned to a group.</p>
+
+<aside class="notice">
+    This endpoint is intended for users with Provider-Admin or Super-Admin access only.
+</aside>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/GetGroupUsers</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>username</td>
+<td>string</td>
+<td>Username of logged-in user.</td>
+</tr>
+<tr>
+<td>group_id</td>
+<td>int</td>
+<td>ID of target group.</td>
+</tr>
+</tbody></table>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"SUCCESS"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"USERS"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">2</span><span class="p">,</span><span class="w">
+    </span><span class="mi">3</span><span class="p">,</span><span class="w">
+    </span><span class="mi">4</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<h3 id="return">Return</h3>
+
+<p>success/failure<br>
+Array of user&rsquo;s IDs belonging to the group.</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+{{root}}/getgroupusers?username=###&amp;group_id=1
+</code></p>
+
+<h2 id="deletegroupuser">DeleteGroupUser</h2>
+
+<p>removes specified user from specified provider&rsquo;s group.</p>
+
+<aside class="notice">
+    This endpoint is intended for users with Provider-Admin or Super-Admin access only.
+</aside>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/DeleteGroupUser</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>username</td>
+<td>string</td>
+<td>Username of logged-in user.</td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>int</td>
+<td>ID of user you wish to remove from the group. Notice: not the username but numeric user id.</td>
+</tr>
+<tr>
+<td>group_id</td>
+<td>int</td>
+<td>ID of group where to add user.</td>
+</tr>
+</tbody></table>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"SUCCESS"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<h3 id="return">Return</h3>
+
+<p>success/failure</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+{{root}}/deletegroupuser?username=###&amp;user_id=5&amp;group_id=5
+</code></p>
+
+<h2 id="addgrouprecordings">AddGroupRecordings</h2>
+
+<p>Adds one or more recording to the specified group.
+<aside class="notice">
+    This endpoint is intended only for users with Provider-Admin or Super-Admin access.
+</aside></p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/AddGroupRecordings</code></p>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"SUCCESS"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>username</td>
+<td>string</td>
+<td>Username of logged-in user.</td>
+</tr>
+<tr>
+<td>group_id</td>
+<td>int</td>
+<td>ID of the destination group.</td>
+</tr>
+<tr>
+<td>recordings</td>
+<td>int[]</td>
+<td>a comma separated list of recording ids.</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<p>success/failure</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+{{root}}/addgrouprecordings?username=###&amp;recordings=123,124,125&amp;group_id=9
+</code></p>
+
+<h2 id="getgrouprecordings">GetGroupRecordings</h2>
+
+<p>Get list of recording&rsquo;s IDs belonging to a group.</p>
+
+<aside class="notice">
+    This endpoint is intended for users with Provider-Admin or Super-Admin access only.
+</aside>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/getgrouprecordings</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>username</td>
+<td>string</td>
+<td>Username of logged-in user.</td>
+</tr>
+<tr>
+<td>group_id</td>
+<td>int</td>
+<td>ID of target group.</td>
+</tr>
+</tbody></table>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"SUCCESS"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"RECORDINGS"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">1201</span><span class="p">,</span><span class="w">
+    </span><span class="mi">1233</span><span class="p">,</span><span class="w">
+    </span><span class="mi">2129</span><span class="p">,</span><span class="w">
+    </span><span class="mi">2689</span><span class="p">,</span><span class="w">
+    </span><span class="mi">3063</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<h3 id="return">Return</h3>
+
+<p>success/failure<br>
+Array of recording&rsquo;s IDs belonging to the group.</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+{{root}}/getgrouprecordings?username=###&amp;group_id=1
+</code></p>
+
+<h2 id="deletegrouprecordings">DeleteGroupRecordings</h2>
+
+<p>Removes one or more recording from the specified group.
+<aside class="notice">
+    This endpoint is intended only for users with Provider-Admin or Super-Admin access.
+</aside></p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/deletegrouprecordings</code></p>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"SUCCESS"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>username</td>
+<td>string</td>
+<td>Username of logged-in user.</td>
+</tr>
+<tr>
+<td>group_id</td>
+<td>int</td>
+<td>ID of the target group.</td>
+</tr>
+<tr>
+<td>recordings</td>
+<td>int[]</td>
+<td>a comma separated list of recording ids.</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<p>success/failure</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+{{root}}/deletegrouprecordings?username=###&amp;recordings=123,124,125&amp;group_id=9
+</code></p>
+
+<h1 id="winam">WINAM</h1>
+
+<h2 id="createrun">CreateRun</h2>
+
+<p>Creates new run of Winam algorithm on specified recording&rsquo;s channel within specified frame.
+<aside class="notice">
+    This endpoint requires <code>;jsessionid=###</code> to be sent within the url. (See example call) 
+</aside></p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/createrun</code></p>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"PROCESS_IDS"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"12283"</span><span class="p">:</span><span class="w"> </span><span class="s2">"53ceb0b8-8c7c-4919-9b3a-bc03f16fbfcf"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nt">"RUN_IDs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">12283</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nt">"SESSION_ID"</span><span class="p">:</span><span class="w"> </span><span class="s2">"xyzxyz"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"SUCCESS"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>recording_id</td>
+<td>int</td>
+<td>ID of target recording.</td>
+</tr>
+<tr>
+<td>channel</td>
+<td>[int]</td>
+<td>Comma-separated list of channels. If this is set to 0, run will be created for each channels.</td>
+</tr>
+<tr>
+<td>from_t</td>
+<td>string</td>
+<td>Relative start time in format h*:mm:ss</td>
+</tr>
+<tr>
+<td>to_t</td>
+<td>string</td>
+<td>Relative end time in format h*:mm:ss</td>
+</tr>
+<tr>
+<td>interval_length</td>
+<td>string</td>
+<td>Length of each processed interval in format h*:mm:ss</td>
+</tr>
+<tr>
+<td>intervals</td>
+<td>int</td>
+<td>number of intervals to process. Should be &lt;= (from_t-to_t)/interval_length</td>
+</tr>
+<tr>
+<td>comment</td>
+<td>string</td>
+<td>(optional) notes about the created winam run.</td>
+</tr>
+<tr>
+<td>weight</td>
+<td>int</td>
+<td>Processing weight.</td>
+</tr>
+<tr>
+<td>pattern_a</td>
+<td>int</td>
+<td>First search patterns length. (Optional, default=8)</td>
+</tr>
+<tr>
+<td>pattern_b</td>
+<td>int</td>
+<td>Second search patterns length. Should be &lt; pattern_a (Optional if pattern_a not spicified, default=7)</td>
+</tr>
+<tr>
+<td>pattern_c</td>
+<td>int</td>
+<td>Third search patterns length. Should be &lt; pattern_b (Optional if pattern_a not spicified, default=6)</td>
+</tr>
+<tr>
+<td>pattern_d</td>
+<td>int</td>
+<td>Fourth search patterns length. Should be &lt; pattern_c (Optional if pattern_a not spicified, default=5)</td>
+</tr>
+<tr>
+<td>min_occurence</td>
+<td>int</td>
+<td>(Optional, default=2) Minimum pattern occurence.</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<p>Id of process created.<br>
+Array of Winam run IDs created within the process.<br>
+success/failure</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+{{root}}/createrun;jsessionid=xyzxyz?channel=10&amp;from_t=00:00:00&amp;comment=tid+9+load+test+create+run+recording&amp;intervals=60&amp;interval_length=00:01:00&amp;recording_id=115000206&amp;weight=8&amp;to_t=00:00:22
+</code></p>
+
+<h2 id="getprocessinfo">GETPROCESSINFO</h2>
+
+<p>Returns details about previously created process (process is created by creating Winam run).<br></p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/GETPROCESSINFO</code></p>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"ROWS"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"PROCESS_ID"</span><span class="p">:</span><span class="w"> </span><span class="s2">"53ceb0b8-8c7c-4919-9b3a-bc03f16fbfcf"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"PROCESS_STATUS"</span><span class="p">:</span><span class="w"> </span><span class="s2">"COMPLETED"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"PROCESS_START_TIME"</span><span class="p">:</span><span class="w"> </span><span class="s2">"09:50:42"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"PROCESS_END_TIME"</span><span class="p">:</span><span class="w"> </span><span class="s2">"09:50:42"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"RUN_ID"</span><span class="p">:</span><span class="w"> </span><span class="mi">12283</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"PROCESS_STATUS_STR"</span><span class="p">:</span><span class="w"> </span><span class="s2">"COMPLETED"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"PROCESS_PROGRESS"</span><span class="p">:</span><span class="w"> </span><span class="s2">"100 %"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"PROCESS_SUBMIT_TIME"</span><span class="p">:</span><span class="w"> </span><span class="s2">"09:50:44"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nt">"SUCCESS"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"SESSION_ID"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>process_id</td>
+<td>int</td>
+<td>ID of target process. (returned by createRun command)</td>
+</tr>
+<tr>
+<td>run_id</td>
+<td>int</td>
+<td>(optional if process_id specified) Comma-separated list of Winam run ids.</td>
+</tr>
+<tr>
+<td>batch</td>
+<td>boolean</td>
+<td>(optional, default false, works only when run_id specified) if set to true, all processes corresponding to sent runs will be displayed.</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<p>Details about created process.</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+{{root}}/GETPROCESSINFO?run_id=12283
+</code></p>
+
+<h2 id="getpatternstats">GETPATTERNSTATS</h2>
+
+<p>Returns standart deviation, anomalies ratios and average for each WINAM run interval.</p>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"SUCCESS"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"standardDeviation"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="mf">1.5999999046326394</span><span class="p">,</span><span class="w">
+    </span><span class="mf">3.0728195144037644</span><span class="p">,</span><span class="w">
+    </span><span class="mf">4.448805349433919</span><span class="p">,</span><span class="w">
+    </span><span class="mf">3.9981990038458224</span><span class="p">,</span><span class="w">
+    </span><span class="mf">4.07785306541135</span><span class="p">,</span><span class="w">
+    </span><span class="mf">3.7762411381594747</span><span class="p">,</span><span class="w">
+    </span><span class="mf">2.7758429670520783</span><span class="p">,</span><span class="w">
+    </span><span class="mf">2.8008742460697174</span><span class="p">,</span><span class="w">
+    </span><span class="mf">3.9535569765087013</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nt">"SESSION_ID"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"anomalies"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">7.90000057220459</span><span class="p">,</span><span class="w">
+    </span><span class="mf">11.100000381469727</span><span class="p">,</span><span class="w">
+    </span><span class="mf">15.399999618530273</span><span class="p">,</span><span class="w">
+    </span><span class="mf">19.69999885559082</span><span class="p">,</span><span class="w">
+    </span><span class="mf">14.5</span><span class="p">,</span><span class="w">
+    </span><span class="mf">18.600000381469727</span><span class="p">,</span><span class="w">
+    </span><span class="mf">14.30000114440918</span><span class="p">,</span><span class="w">
+    </span><span class="mi">18</span><span class="p">,</span><span class="w">
+    </span><span class="mf">22.5</span><span class="p">,</span><span class="w">
+    </span><span class="mf">26.30000114440918</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nt">"rollingAvg"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">7.90000057220459</span><span class="p">,</span><span class="w">
+    </span><span class="mf">9.5</span><span class="p">,</span><span class="w">
+    </span><span class="mf">11.466667175292969</span><span class="p">,</span><span class="w">
+    </span><span class="mf">13.524999618530273</span><span class="p">,</span><span class="w">
+    </span><span class="mf">13.719999313354492</span><span class="p">,</span><span class="w">
+    </span><span class="mf">14.533332824707031</span><span class="p">,</span><span class="w">
+    </span><span class="mf">14.5</span><span class="p">,</span><span class="w">
+    </span><span class="mf">15.942856788635254</span><span class="p">,</span><span class="w">
+    </span><span class="mf">17.571428298950195</span><span class="p">,</span><span class="w">
+    </span><span class="mf">19.128572463989258</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/GETPATTERNSTATS</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>run_id</td>
+<td>int</td>
+<td>ID of target run.</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<p>3 JSON objects containing JSON arrays with corresponding float values information.</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+{{root}}/GETPATTERNSTATS?run_id=12283
+</code></p>
+
+<h2 id="getintervaldata">GETINTERVALDATA</h2>
+
+<p>Returns detailed information about each interval in WINAM run.</p>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"SUCCESS"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"SESSION_ID"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"intervals"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"ANOMALIES_RATIO"</span><span class="p">:</span><span class="w"> </span><span class="s2">"7.90%"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"START_ER"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"INDEX"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"START"</span><span class="p">:</span><span class="w"> </span><span class="s2">"00:00:00"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"END"</span><span class="p">:</span><span class="w"> </span><span class="s2">"00:01:00"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"ID"</span><span class="p">:</span><span class="w"> </span><span class="mi">1469284</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"PATTERNS"</span><span class="p">:</span><span class="w"> </span><span class="mi">18456</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"END_ER"</span><span class="p">:</span><span class="w"> </span><span class="mi">5010</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"LENGTH"</span><span class="p">:</span><span class="w"> </span><span class="mi">10020</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"ANOMALIES_RATIO"</span><span class="p">:</span><span class="w"> </span><span class="s2">"11.10%"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"START_ER"</span><span class="p">:</span><span class="w"> </span><span class="mi">5010</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"INDEX"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"START"</span><span class="p">:</span><span class="w"> </span><span class="s2">"00:01:00"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"END"</span><span class="p">:</span><span class="w"> </span><span class="s2">"00:02:00"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"ID"</span><span class="p">:</span><span class="w"> </span><span class="mi">1469285</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"PATTERNS"</span><span class="p">:</span><span class="w"> </span><span class="mi">17812</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"END_ER"</span><span class="p">:</span><span class="w"> </span><span class="mi">10020</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"LENGTH"</span><span class="p">:</span><span class="w"> </span><span class="mi">10020</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="err">...</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/GETINTERVALDATA</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>run_id</td>
+<td>int</td>
+<td>ID of target run.</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<p>Array of objects containing associated information about each interval.</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+{{root}}/GETINTERVALDATA?run_id=12283
+</code></p>
+
+<h2 id="getpatternoccurences">GETPATTERNOCCURENCES</h2>
+
+<p>Returns list of patterns with their occurences.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/GETPATTERNOCCURENCES</code></p>
+<pre class="highlight json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"interval"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"pattern"</span><span class="p">:</span><span class="w"> </span><span class="s2">"00000000000000010001"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"patterncount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"17"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"occurances"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{274, 780, 1008, ...
+  },
+  {
+    "</span><span class="err">interval</span><span class="s2">": "</span><span class="mi">2</span><span class="s2">",
+    "</span><span class="err">pattern</span><span class="s2">": "</span><span class="mi">00000000000000000000</span><span class="s2">",
+    "</span><span class="err">patterncount</span><span class="s2">": "</span><span class="mi">17</span><span class="s2">",
+    "</span><span class="err">occurances</span><span class="s2">": "</span><span class="p">{</span><span class="err">1102,</span><span class="w"> </span><span class="err">2792,</span><span class="w"> </span><span class="err">6400,</span><span class="w"> </span><span class="err">...</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="err">...</span><span class="w">
+</span><span class="err">]</span><span class="w">
+</span></code></pre>
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>run_id</td>
+<td>int</td>
+<td>ID of target run.</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+{{root}}/GETPATTERNOCCURENCES?run_id=12283
 </code></p>
 
 <h1 id="mri">MRI</h1>
@@ -1667,7 +2501,7 @@ Same as above, with client samply = 256:<br>
 
 <h2 id="updatebookmark">UPDATEBOOKMARK</h2>
 <pre class="highlight json"><code></code></pre>
-<p>Update bookmark item in user&rsquo;s bookmarks</p>
+<p>Update bookmark sequence number in user&rsquo;s bookmarks.</p>
 
 <h3 id="http-request">HTTP Request</h3>
 
@@ -1684,13 +2518,13 @@ Same as above, with client samply = 256:<br>
 </thead><tbody>
 <tr>
 <td>bookmark_id</td>
-<td></td>
-<td>(int)</td>
+<td>int</td>
+<td>ID of the bookmark to be updated.</td>
 </tr>
 <tr>
 <td>seq_no</td>
-<td></td>
-<td>(int)</td>
+<td>int</td>
+<td>New sequence number.</td>
 </tr>
 </tbody></table>
 
@@ -1704,6 +2538,8 @@ Same as above, with client samply = 256:<br>
 [BASEURL]api/updatebookmark;jsessionid=###?username=winam&amp;bookmark_id=nn&amp;seq_no=mm
 </code></p>
 
+<h2 id="createbookmarklist">CREATEBOOKMARKLIST</h2>
+<pre class="highlight json"><code></code></pre>
 <h1 id="signal-processing">Signal Processing</h1>
 
 <h2 id="powerspectrum">POWERSPECTRUM</h2>
@@ -1745,20 +2581,14 @@ Same as above, with client samply = 256:<br>
 </tr>
 <tr>
 <td>token</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>Python</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>based</td>
-<td></td>
-<td></td>
+<td>string</td>
+<td>(optional) Notification token.</td>
 </tr>
 </tbody></table>
+
+<aside class="notice">
+Python-based  
+</aside>
 
 <h3 id="return">Return</h3>
 
@@ -1816,8 +2646,8 @@ Same as above, with client samply = 256:<br>
 </tr>
 <tr>
 <td>token</td>
-<td></td>
-<td></td>
+<td>string</td>
+<td>(optional) Notification token.</td>
 </tr>
 </tbody></table>
 
@@ -2123,6 +2953,243 @@ Same as above, with client samply = 256:<br>
 <p><code>
 </code></p>
 
+<h1 id="plugin">Plugin</h1>
+
+<h2 id="getpluginlist">GETPLUGINLIST</h2>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"PLUGINLIST"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"histogram"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"shortname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hist2"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"outparams"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"language"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Python"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Computes histogram of an EEG segment"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"params"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"script_file"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hist2_plugin.py"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"userId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vml1"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"providerId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"active"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"requires_lib"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"combination"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"inparam"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">11</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"plugin_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"param_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"weight"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"param_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Number"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"render"</span><span class="p">:</span><span class="w"> </span><span class="s2">"none"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"table_cols"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"table_rows"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"dimension"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"grouped_by"</span><span class="p">:</span><span class="w"> </span><span class="s2">"none"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"param_inout"</span><span class="p">:</span><span class="w"> </span><span class="s2">"I"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"constraints"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+              </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+              </span><span class="nt">"operator"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&gt;"</span><span class="p">,</span><span class="w">
+              </span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"500"</span><span class="p">,</span><span class="w">
+              </span><span class="nt">"paramId"</span><span class="p">:</span><span class="w"> </span><span class="mi">11</span><span class="p">,</span><span class="w">
+              </span><span class="nt">"pluginId"</span><span class="p">:</span><span class="w"> </span><span class="mi">9</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+          </span><span class="p">]</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">],</span><span class="w">
+      </span><span class="nt">"outparam"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">14</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"plugin_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"param_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"edges"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"param_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Vector"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"render"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Line Chart"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"table_cols"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"table_rows"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"dimension"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"grouped_by"</span><span class="p">:</span><span class="w"> </span><span class="s2">"none"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"param_inout"</span><span class="p">:</span><span class="w"> </span><span class="s2">"O"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"constraints"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]}</span><span class="w">
+</span></code></pre>
+<p>Displays list details about the available plugins.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/GETPLUGINLIST</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>NONE</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<p>A list of available plugins with associated meta-data.</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+{{root}}/GETPLUGINLIST
+</code></p>
+
+<h2 id="getplugin">GETPLUGIN</h2>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"PLUGIN"</span><span class="p">:</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"histogram"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"shortname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hist2"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"outparams"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"language"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Python"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Computes histogram of an EEG segment"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"params"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"script_file"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hist2_plugin.py"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"userId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vml1"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"providerId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"active"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"requires_lib"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"combination"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"inparam"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">11</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"plugin_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"param_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"weight"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"param_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Number"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"render"</span><span class="p">:</span><span class="w"> </span><span class="s2">"none"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"table_cols"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"table_rows"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"dimension"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"grouped_by"</span><span class="p">:</span><span class="w"> </span><span class="s2">"none"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"param_inout"</span><span class="p">:</span><span class="w"> </span><span class="s2">"I"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"constraints"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+              </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+              </span><span class="nt">"operator"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&gt;"</span><span class="p">,</span><span class="w">
+              </span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"500"</span><span class="p">,</span><span class="w">
+              </span><span class="nt">"paramId"</span><span class="p">:</span><span class="w"> </span><span class="mi">11</span><span class="p">,</span><span class="w">
+              </span><span class="nt">"pluginId"</span><span class="p">:</span><span class="w"> </span><span class="mi">9</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+          </span><span class="p">]</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">],</span><span class="w">
+      </span><span class="nt">"outparam"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">14</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"plugin_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"param_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"edges"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"param_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Vector"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"render"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Line Chart"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"table_cols"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"table_rows"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"dimension"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"grouped_by"</span><span class="p">:</span><span class="w"> </span><span class="s2">"none"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"param_inout"</span><span class="p">:</span><span class="w"> </span><span class="s2">"O"</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"constraints"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Displays list details about the available plugins.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/GETPLUGIN</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>shortname</td>
+<td>string</td>
+<td>Short-name of plugin</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<p>Details about plugin with associated meta-data.</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+{{root}}/GETPLUGIN?shortname=hist2
+</code></p>
+
+<h2 id="runplugin">RunPlugin</h2>
+
+<p>Runs a plugin on specified recording in specified timeframe.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/RunPlugin</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>plugin</td>
+<td>string</td>
+<td>Plugin short-name.</td>
+</tr>
+<tr>
+<td>from_t</td>
+<td>string</td>
+<td>Relative start of data time in format HH:mm:ss.</td>
+</tr>
+<tr>
+<td>to_t</td>
+<td>string</td>
+<td>Relative end of data in format HH:mm:ss.</td>
+</tr>
+<tr>
+<td>recording_id</td>
+<td>int</td>
+<td>ID of recording to run plugin on.</td>
+</tr>
+<tr>
+<td><em>custom</em></td>
+<td>&ndash;</td>
+<td><em>Parameters stated in filter&rsquo;s meta data.</em></td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<p>success/failure<br>
+Plugin output data.</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+{{root}}/runplugin?from_t=00:00:00&amp;to_t=00:10:00&amp;plugin=hist2&amp;bins=1&amp;weight=2&amp;recording_id=595&amp;channel=1
+</code></p>
+
 <h1 id="other">Other</h1>
 
 <h2 id="savecomment">SAVECOMMENT</h2>
@@ -2170,6 +3237,88 @@ Update comment on run id=mm<br>
 <br>
 Update comment on events id=nn<br>
 [BASE-URL]api/savecomment?session_id=####&amp;username=winam&amp;object_id=mm&amp;type=events&amp;comment=My+case+comment
+</code></p>
+
+<h2 id="statistics">Statistics</h2>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"SUCCESS"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"STAT"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"RECORDING"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"ACTIVE"</span><span class="p">:</span><span class="w"> </span><span class="mi">48</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"SHARED"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"TOTAL_DURATION"</span><span class="p">:</span><span class="w"> </span><span class="s2">"138:34:39"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"TOTAL_DURATION_TS"</span><span class="p">:</span><span class="w"> </span><span class="mi">498879</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nt">"PLUGINS"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"USERS"</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"CASES"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"TOTAL"</span><span class="p">:</span><span class="w"> </span><span class="mi">53</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"ACTIVE"</span><span class="p">:</span><span class="w"> </span><span class="mi">49</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"ARCHIVED"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nt">"PROVIDER_ID"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"PROVIDER_NAME"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Clinic 1"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"BUCKET_UP"</span><span class="p">:</span><span class="w"> </span><span class="s2">"epi-incoming-test"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"BUCKET_DOWN"</span><span class="p">:</span><span class="w"> </span><span class="s2">"winambucket"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"BUCKET_VIDEO"</span><span class="p">:</span><span class="w"> </span><span class="s2">"winambucket"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"STORAGE"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"LIMIT"</span><span class="p">:</span><span class="w"> </span><span class="mi">7000000000000</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"USED"</span><span class="p">:</span><span class="w"> </span><span class="mi">4517870630460</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"AVAILABLE"</span><span class="p">:</span><span class="w"> </span><span class="mi">2482129369540</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nt">"PROVIDER_GROUPS"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"provider_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"permission"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test group"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"this is my first group"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-04-06 08:01:48.0"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"restricted"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"provider_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"permission"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"partner 2"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"this is my group"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-04-06 08:02:53.0"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"restricted"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Returns provider statistics.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/Statistics</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>username</td>
+<td>string</td>
+<td>Username of logged-in user.</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<p>JSON object containing stats of logged-in user provider.</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+{{root}}/statistics?username=###
 </code></p>
 
       </div>
