@@ -2389,6 +2389,170 @@ success/failure</p>
 <p><code>
 </code></p>
 
+<h2 id="createeventtype">createeventtype</h2>
+
+<p>Creates new event type with description of the event.
+<code class="prettyprint">json
+</code></p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/createeventtype</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>event</td>
+<td>[String]</td>
+<td>Event text description.</td>
+</tr>
+<tr>
+<td>username</td>
+<td>[String]</td>
+<td>Username of logged-in user.</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<p>Returns newly created event type model.</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+{{root}}/createeventtype?username=###&amp;event=Print D
+</code></p>
+
+<h2 id="geteventtypelist">geteventtypelist</h2>
+
+<p>Lists all event types.
+<code class="prettyprint">json
+</code></p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/geteventtypelist</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>username</td>
+<td>[String]</td>
+<td>Username of logged-in user.</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<p>Returns list of event type models.</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+{{root}}/geteventtypelist?username=###
+</code></p>
+
+<h2 id="editeventtype">editeventtype</h2>
+
+<p>Lists all event types.
+<code class="prettyprint">json
+</code></p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/editeventtype</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>username</td>
+<td>[String]</td>
+<td>Username of logged-in user.</td>
+</tr>
+<tr>
+<td>type_id</td>
+<td>[int]</td>
+<td>ID of event type to modify.</td>
+</tr>
+<tr>
+<td>event</td>
+<td>[String]</td>
+<td>New event text description.</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<p>Returns edited event type model.</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+{{root}}/editeventtype?username=###&amp;type_id=2&amp;event=Asleep
+</code></p>
+
+<h2 id="deleteeventtype">deleteeventtype</h2>
+
+<p>Lists all event types.
+<code class="prettyprint">json
+</code></p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/deleteeventtype</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>username</td>
+<td>[String]</td>
+<td>Username of logged-in user.</td>
+</tr>
+<tr>
+<td>type_id</td>
+<td>[int]</td>
+<td>ID of event type to delete.</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<p>Returns edited event type model.</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+{{root}}/deleteeventtype?username=###&amp;type_id=1
+</code></p>
+
 <h1 id="bookmark">Bookmark</h1>
 
 <h2 id="getbookmarklist">GETBOOKMARKLIST</h2>
