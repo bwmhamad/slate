@@ -162,11 +162,61 @@ VmlPro Api is the data source of all other clients in Neuropro, providing variet
     You must replace <code>{{session_id}}</code> with key from login endpoint.
 </aside>
 
+<aside class="notice">
+    Note that some users are obliged to user 2-phase authentication scheme. When user initiates login request, needtoken flag is sent to the client and a token is sent to user&rsquo;s associated email. Client should validate the token by another call to login endpoint.
+</aside>
+
 <h1 id="user-amp-session">User &amp; Session</h1>
 
 <h2 id="login">LOGIN</h2>
-<pre class="highlight json"><code></code></pre>
+<pre class="highlight json"><code><span class="w">
+</span><span class="err">`normal</span><span class="w"> </span><span class="err">login</span><span class="w"> </span><span class="err">response</span><span class="w"> </span><span class="err">example`</span><span class="w">
+</span><span class="p">{</span><span class="w">
+    </span><span class="nt">"SUCCESS"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"USER_GROUPS"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+    </span><span class="nt">"SESSION_ID"</span><span class="p">:</span><span class="w"> </span><span class="s2">"7373783427874368324"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"USER_GROUPS"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"provider_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"permission"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test"</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test"</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-09-22 08:38:08.0"</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"restricted"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="nt">"user"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"user_country"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Swiss"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"user_access_level"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ROLE_ADMIN"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"provider_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"user_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"user_city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Zurich"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"user_telephone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"342324"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"user_firstName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"NAME"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"user_email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EMAIL@EMAIL.com"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"user_address1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ADDRESS"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"user_address2"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"user_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"username"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"user_lastName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LAST NAME"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"user_institution"</span><span class="p">:</span><span class="w"> </span><span class="s2">"NeuroPro"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"user_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="err">`token</span><span class="w"> </span><span class="err">needed</span><span class="w"> </span><span class="err">login</span><span class="w"> </span><span class="err">response`</span><span class="w">
+</span><span class="p">{</span><span class="w">
+    </span><span class="nt">"SUCCESS"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"NEEDTOKEN"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"EMAIL"</span><span class="p">:</span><span class="w"> </span><span class="s2">"blask***************"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span></code></pre>
 <p>Authenticates user based on username / password combination, and creates the user&rsquo;s application session.</p>
+
+<aside class="notice">
+    Note that some users are obliged to user 2-phase authentication scheme. When user initiates login request, needtoken flag is sent to the client and a token is sent to user&rsquo;s associated email. Client should validate the token by another call to login endpoint. See Login section for more information.
+</aside>
 
 <h3 id="http-request">HTTP Request</h3>
 
@@ -191,11 +241,24 @@ VmlPro Api is the data source of all other clients in Neuropro, providing variet
 <td>string</td>
 <td>password set by the user.</td>
 </tr>
+<tr>
+<td>token</td>
+<td>string</td>
+<td>Only required if NEEDTOKEN flag is received after login request. Represents token sent automatically to user&rsquo;s associated email address.</td>
+</tr>
 </tbody></table>
 
 <h3 id="return">Return</h3>
 
-<p>Session_ID: [string] unique identifier created by the server and is associated with the user session. The session id parameters should be passed to subsequent API calls.  If authentication fails, null is returned.</p>
+<p>On success the session id, user groups and user model are sent.</p>
+
+<p>Session_ID: [string] unique identifier created by the server and is associated with the user session. The session id parameters should be passed to subsequent API calls.  If authentication fails, null is returned.
+user: User information model.
+USER_GROUPS: list of groups that are assigned to the user. See Groups for more details.</p>
+
+<p>If user requires 2-phase authentication, NEEDTOKEN flag is received and client is required to validate login by sending <code class="prettyprint">token</code> field to the same endpoint along with login and password.</p>
+
+<p>NEEDTOKEN: Field indicating that user needs 2-phase email token verification.</p>
 
 <h3 id="example-call">Example Call</h3>
 
@@ -235,6 +298,50 @@ VmlPro Api is the data source of all other clients in Neuropro, providing variet
 
 <p><code>
 [BASE-URL]/api/logoff
+</code></p>
+
+<h2 id="updateuserpassword">UPDATEUSERPASSWORD</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Updates user currently set password.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET {{root}}/updateuserpassword</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>username</td>
+<td>string</td>
+<td>loggen in user name.</td>
+</tr>
+<tr>
+<td>old_password</td>
+<td>string</td>
+<td>current user&rsquo;s password.</td>
+</tr>
+<tr>
+<td>password</td>
+<td>string</td>
+<td>new user password. Password should be at least 6 characters long, have at least 1 capital, at least 1 small letter and at least 1 digit.</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<p>Success/Failure</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+{{root}}/updateuserpassword?username=user1&amp;password=mypassword&amp;old_password=pass123
 </code></p>
 
 <h2 id="updateuserprofile">UPDATEUSERPROFILE</h2>
@@ -318,6 +425,104 @@ VmlPro Api is the data source of all other clients in Neuropro, providing variet
 
 <p><code>
 [BASE-URL]/api/updateuserprofile;jsessionid=###?username=winam&amp;fname=####&amp;lname=#####&amp;city=####@type=####
+</code></p>
+
+<h2 id="createuseradmin">CREATEUSERADMIN</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Creates user in current user&rsquo;s provider.</p>
+
+<aside class="notice">
+    This endpoint is intended only for users with Provider-Admin or Super-Admin access.
+</aside>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/CREATEUSERADMIN</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>lname</td>
+<td>string</td>
+<td>Last name.</td>
+</tr>
+<tr>
+<td>fname</td>
+<td>string</td>
+<td>First name.</td>
+</tr>
+<tr>
+<td>type</td>
+<td>string</td>
+<td>[Academic, Commercial].</td>
+</tr>
+<tr>
+<td>institution</td>
+<td>string</td>
+<td>Name of institution.</td>
+</tr>
+<tr>
+<td>addr1</td>
+<td>string</td>
+<td>First address.</td>
+</tr>
+<tr>
+<td>addr2</td>
+<td>string</td>
+<td>Second address (optional).</td>
+</tr>
+<tr>
+<td>city</td>
+<td>string</td>
+<td>City name.</td>
+</tr>
+<tr>
+<td>country</td>
+<td>string</td>
+<td>Country name.</td>
+</tr>
+<tr>
+<td>email</td>
+<td>string</td>
+<td>Valid email address. Used for password recovery. No duplicate e-mails allowed.</td>
+</tr>
+<tr>
+<td>tel</td>
+<td>string</td>
+<td>Telephone number.</td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>string</td>
+<td>Username of new user.</td>
+</tr>
+<tr>
+<td>password</td>
+<td>string</td>
+<td>New user password. Password should be at least 6 characters long, have at least 1 capital, at least 1 small letter and at least 1 digit.</td>
+</tr>
+<tr>
+<td>username</td>
+<td>string</td>
+<td>currently logged-in username.</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<p>Success/Failure and new user&rsquo;s model.</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+{{root}}/createuseradmin?username=myuser&amp;user_id=tester&amp;password=Password123&amp;email=em@em.com&amp;tel=00000&amp;institution=insta&amp;type=Academic
 </code></p>
 
 <h2 id="uploadphoto">UPLOADPHOTO</h2>
@@ -2723,6 +2928,77 @@ success/failure</p>
 
 <h2 id="createbookmarklist">CREATEBOOKMARKLIST</h2>
 <pre class="highlight json"><code></code></pre>
+<p>Creates new bookmark list with specified name and sequence number.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/CREATEBOOKMARKLIST</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>Name of the bookmark list</td>
+</tr>
+<tr>
+<td>seq_no</td>
+<td>int</td>
+<td>List sequence number. Used to sort lists in order.</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<p>BOOKMARKLIST_ID: Id  of created list.</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+{{root}}/createbookmarklist?name=abc&amp;seq_no=1
+</code></p>
+
+<h2 id="removebookmarklist">REMOVEBOOKMARKLIST</h2>
+<pre class="highlight json"><code></code></pre>
+<p>Deletes bookmark list by id.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://development.api.neuropro.ch/api/CREATEBOOKMARKLIST</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>list_id</td>
+<td>int</td>
+<td>id of the list to delete.</td>
+</tr>
+</tbody></table>
+
+<h3 id="return">Return</h3>
+
+<p>Success/Failure.</p>
+
+<h3 id="example-call">Example Call</h3>
+
+<p><code>
+{{root}}/removebookmarklist?list_id=77
+</code></p>
+
 <h1 id="signal-processing">Signal Processing</h1>
 
 <h2 id="powerspectrum">POWERSPECTRUM</h2>
